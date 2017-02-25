@@ -22,6 +22,8 @@ public class StorageServer implements Storage, Command
     File root;
     int clientPort;
     int commandPort;
+    boolean shouldFindClientPort;
+    boolean shouldFindCommandPort;
     List<Path> files = new ArrayList<>();
     Thread clientMain;
     Thread commandMain;
@@ -51,10 +53,25 @@ public class StorageServer implements Storage, Command
     public StorageServer(File root, int client_port, int command_port)
         throws IOException, NullPointerException
     {
+        System.err.println("StorageServer(" + root.toString() + ", " + client_port + ", " + command_port + ")");
         if (root == null) throw new NullPointerException("root is null");
         this.root = root;
-        this.clientPort = decidePort(client_port);
-        this.commandPort = decidePort(command_port);
+        if (client_port == 0)
+        {
+            this.shouldFindClientPort = true;
+        }
+        else
+        {
+            this.clientPort = client_port;
+        }
+        if (command_port == 0)
+        {
+            this.shouldFindCommandPort = true;
+        }
+        else
+        {
+            this.commandPort = command_port;
+        }
     }
 
     /** Creats a storage server, given a directory on the local filesystem.
@@ -68,9 +85,12 @@ public class StorageServer implements Storage, Command
         @throws NullPointerException If <code>root</code> is <code>null</code>.
      */
     public StorageServer(File root)
-        throws IOException, NullPointerException
+        throws NullPointerException
     {
-        this(root, SYSTEM_DECIDE_PORT, SYSTEM_DECIDE_PORT);
+        if (root == null) throw new NullPointerException("root is null");
+        this.root = root;
+        this.shouldFindClientPort = true;
+        this.shouldFindCommandPort = true;
     }
 
     /** Starts the storage server and registers it with the given naming
@@ -101,21 +121,33 @@ public class StorageServer implements Storage, Command
         if (FileService.isFile(this.root.getPath()))
             throw new FileNotFoundException("root cannot be a file");
 
-        // Create Socket Addresses
+        InetAddress clientAddress = InetAddress.getByName(hostname);
+        if (this.shouldFindClientPort)
+        {
+            this.clientPort = NetworkService.findAvailablePort(clientAddress);
+            this.shouldFindClientPort = false;
+        }
         this.clientSocketAddress = new InetSocketAddress(
-            InetAddress.getByName(hostname),
+            clientAddress,
             this.clientPort
         );
+        this.storageSkeleton = new Skeleton<Storage>(Storage.class, this, this.clientSocketAddress);
+        this.storageSkeleton.start();
+        this.isStorageSkeletonStarted = true;
+
+        InetAddress commandAddress = InetAddress.getByName(hostname);
+        if (this.shouldFindCommandPort)
+        {
+            this.commandPort = NetworkService.findAvailablePort(commandAddress);
+            this.shouldFindCommandPort = false;
+        }
         this.commandSocketAddress = new InetSocketAddress(
-            InetAddress.getByName(hostname),
+            commandAddress,
             this.commandPort
         );
         this.commandSkeleton = new Skeleton<Command>(Command.class, this, this.commandSocketAddress);
-        this.storageSkeleton = new Skeleton<Storage>(Storage.class, this, this.clientSocketAddress);
         this.commandSkeleton.start();
         this.isCommandSkeletonStarted = true;
-        this.storageSkeleton.start();
-        this.isStorageSkeletonStarted = true;
     }
 
     /** Stops the storage server.
@@ -207,11 +239,4 @@ public class StorageServer implements Storage, Command
         throw new UnsupportedOperationException("not implemented");
     }
 
-    private static int decidePort(int inputPort)
-        throws IOException
-    {
-        int foundPort = NetworkService.findAvailablePort();
-        if (foundPort == -1) throw new IOException("Could not find port for client");
-        return foundPort;
-    }
 }

@@ -7,4 +7,6 @@ public enum Type
 {
     FILE,
     DIRECTORY,
+    UNKOWN,
+    ROOT,
 }

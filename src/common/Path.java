@@ -1,6 +1,7 @@
 package common;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 /** Distributed filesystem paths.
@@ -24,13 +25,15 @@ public class Path
 {
     List<Component> components = new LinkedList();
     String localPath;
+    Path parent;
 
 
     /** Creates a new path which represents the root directory. */
     public Path()
     {
-        this.localPath = "to implement";
-        throw new UnsupportedOperationException("not implemented");
+        Component component = new Component(Type.ROOT, "ROOT");
+        components.add(component);
+        this.parent = null;
     }
 
     /** Creates a new path by appending the given component to an existing path.
@@ -46,35 +49,19 @@ public class Path
     {
         if (component.trim().equals(""))
             throw new IllegalArgumentException("component cannot be empty String");
-        if (component.indexOf('/') != -1)
-            throw new IllegalArgumentException("component had character `/`");
         if (component.indexOf(':') != -1)
             throw new IllegalArgumentException("component had character `:`");
+        if (component.indexOf('/') != -1)
+            throw new IllegalArgumentException("component had `/`");
+        if ((path.toString() + component).charAt(0) != '/')
+            throw new IllegalArgumentException("path didn't start with character `/`");
 
-        this.localPath = path.getLocalPath() + "/" + component;
-        if (!FileService.doesExist(this.localPath))
-        {
-            // TODO: handle somehow
-        }
-        Type componentType;
-        if (FileService.isFile(this.localPath))
-        {
-            componentType = Type.FILE;
-        }
-        else if (FileService.isDirectory(this.localPath))
-        {
-            componentType = Type.DIRECTORY;
-        }
-        else
-        {
-            // TODO: handle, might have to change
-            throw new IllegalArgumentException("entity referenced by component is invalid type");
-        }
-        Component comp = new Component(componentType, component);
+        Component comp = new Component(Type.UNKOWN, component);
         path.components.forEach(c -> {
             this.components.add(new Component(c.type, c.name));
         });
         this.components.add(comp);
+        this.parent = path;
     }
 
     /** Creates a new path from a path string.
@@ -91,7 +78,22 @@ public class Path
      */
     public Path(String path)
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (path.trim().equals(""))
+            throw new IllegalArgumentException("component cannot be empty String");
+        if (path.indexOf(':') != -1)
+            throw new IllegalArgumentException("component had character `:`");
+        if (path.charAt(0) != '/')
+            throw new IllegalArgumentException("component didn't start with character `/`");
+        this.components.add(new Component(Type.ROOT, "ROOT"));
+        String[] split = path.split("/");
+        for (int i = 1 ; i < split.length ; i++)
+        {
+            if (split[i].equals("")) continue;
+            this.components.add(new Component(
+                ((i == split.length - 1) ? Type.UNKOWN : Type.DIRECTORY),
+                split[i]
+            ));
+        }
     }
 
     /** Returns an iterator over the components of the path.
@@ -105,7 +107,29 @@ public class Path
     @Override
     public Iterator<String> iterator()
     {
-        throw new UnsupportedOperationException("not implemented");
+        ArrayList<String> componentStrings = new ArrayList<>();
+        for (int i = 0 ; i < this.components.size() ; i++)
+        {
+            componentStrings.add(new String(this.components.get(i).getName()));
+        }
+        return new Iterator<String>() {
+            int index = 1;
+            ArrayList<String> strings = new ArrayList<>(componentStrings);
+
+            @Override
+            public boolean hasNext() {
+                return this.index < this.strings.size();
+            }
+
+            @Override
+            public String next() {
+                if (this.index >= this.strings.size())
+                    throw new NoSuchElementException("iterator doesn't have next");
+                String nextString = this.strings.get(index);
+                this.index += 1;
+                return nextString;
+            }
+        };
     }
 
     /** Lists the paths of all files in a directory tree on the local
@@ -120,7 +144,74 @@ public class Path
      */
     public static Path[] list(File directory) throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (!directory.exists())
+            throw new FileNotFoundException("directory does not exist");
+        if (!directory.isDirectory())
+            throw new IllegalArgumentException("directory is not a directory");
+        File[] files = directory.listFiles();
+        ArrayList<Path> paths = new ArrayList<>();
+        String directoryPath = directory.getPath();
+        for (int i = 0 ; i < files.length ; i++)
+        {
+            File file = files[i];
+            if (file.isDirectory())
+            {
+                ArrayList<Path> subdirPaths = new ArrayList<Path>(
+                    Arrays.asList(Path.listWithOGDirectory(file, directory))
+                );
+                ArrayList<Path> temp = new ArrayList<>();
+                temp.addAll(paths);
+                temp.addAll(subdirPaths);
+                paths = temp;
+            }
+            else
+            {
+                paths.add(new Path(file.getPath().substring(directoryPath.length())));
+            }
+        }
+        Path[] toReturn = new Path[paths.size()];
+        for (int i = 0 ; i < paths.size() ; i++)
+        {
+            toReturn[i] = paths.get(i);
+        }
+        return toReturn;
+    }
+
+    private static Path[] listWithOGDirectory(File directory, File originalDirectory)
+        throws FileNotFoundException
+    {
+        if (!directory.exists())
+            throw new FileNotFoundException("directory does not exist");
+        if (!directory.isDirectory())
+            throw new IllegalArgumentException("directory is not a directory");
+        File[] files = directory.listFiles();
+        ArrayList<Path> paths = new ArrayList<>();
+        String directoryPath = originalDirectory.getPath();
+        for (int i = 0 ; i < files.length ; i++)
+        {
+            File file = files[i];
+            if (file.isDirectory())
+            {
+                ArrayList<Path> subdirPaths = new ArrayList<Path>(
+                    Arrays.asList(Path.listWithOGDirectory(file, originalDirectory))
+                );
+                ArrayList<Path> temp = new ArrayList<>();
+                temp.addAll(paths);
+                temp.addAll(subdirPaths);
+                paths = temp;
+            }
+            else
+            {
+                paths.add(new Path(file.getPath().substring(directoryPath.length())));
+            }
+        }
+        Path[] toReturn = new Path[paths.size()];
+        for (int i = 0 ; i < paths.size() ; i++)
+        {
+            toReturn[i] = paths.get(i);
+        }
+        return toReturn;
+
     }
 
     /** Determines whether the path represents the root directory.
@@ -130,7 +221,7 @@ public class Path
      */
     public boolean isRoot()
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.getComponent().isRoot();
     }
 
     /** Returns the path to the parent of this path.
@@ -140,7 +231,14 @@ public class Path
      */
     public Path parent()
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (this.getComponent().isRoot())
+            throw new IllegalArgumentException("cannot call last() on root");
+        String parentString = "/";
+        for (int i = 1 ; i < this.components.size() - 1 ; i++)
+        {
+            parentString += this.components.get(i).getName();
+        }
+        return new Path(parentString);
     }
 
     /** Returns the last component in the path.
@@ -151,7 +249,9 @@ public class Path
      */
     public String last()
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (this.getComponent().isRoot())
+            throw new IllegalArgumentException("cannot call last() on root");
+        return this.getComponent().getName();
     }
 
     /** Determines if the given path is a subpath of this path.
@@ -166,7 +266,16 @@ public class Path
      */
     public boolean isSubpath(Path other)
     {
-        throw new UnsupportedOperationException("not implemented");
+        String thisString = this.toString();
+        String otherString = other.toString();
+        if (otherString.length() > thisString.length())
+            return false;
+        for (int i = 0 ; i < otherString.length() ; i++)
+        {
+            if (thisString.charAt(i) != otherString.charAt(i))
+                return false;
+        }
+        return true;
     }
 
     /** Converts the path to <code>File</code> object.
@@ -177,7 +286,8 @@ public class Path
      */
     public File toFile(File root)
     {
-        throw new UnsupportedOperationException("not implemented");
+
+        return new File(root.getPath() + this.toString().substring(1));
     }
 
     /** Compares this path to another.
@@ -219,7 +329,9 @@ public class Path
     @Override
     public int compareTo(Path other)
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (this.equals(other)) return 0;
+        if (other.isSubpath(this)) return 1;
+        return -1;
     }
 
     /** Compares two paths for equality.
@@ -231,16 +343,15 @@ public class Path
         @return <code>true</code> if and only if the two paths are equal.
      */
     @Override
-    public boolean equals(Object other)
-    {
-        throw new UnsupportedOperationException("not implemented");
+    public boolean equals(Object other) {
+        return other instanceof Path && this.toString().equals(other.toString());
     }
 
     /** Returns the hash code of the path. */
     @Override
     public int hashCode()
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.toString().hashCode();
     }
 
     /** Converts the path to a string.
@@ -254,7 +365,22 @@ public class Path
     @Override
     public String toString()
     {
-        throw new UnsupportedOperationException("not implemented");
+        String string = "";
+        for (int i = 0 ; i < this.components.size() ; i++)
+        {
+            Component component = this.components.get(i);
+            if (component.getName().equals("ROOT"))
+            {
+                string += "/";
+            }
+            else
+            {
+                string += component.getName();
+                if (i != this.components.size() - 1)
+                    string += "/";
+            }
+        }
+        return string;
     }
 
     public String getLocalPath()
@@ -265,5 +391,31 @@ public class Path
     public List<Component> getComponents()
     {
         return this.components;
+    }
+
+    public boolean isDirectory()
+    {
+        return this.components.get(this.components.size() - 1).type == Type.DIRECTORY;
+    }
+
+    public boolean isFile()
+    {
+        return this.components.get(this.components.size() - 1).type == Type.FILE;
+    }
+
+    public Component getComponent()
+    {
+        if (this.components.size() == 0) return null;
+        return this.components.get(this.components.size() - 1);
+    }
+
+    public Path getParent()
+    {
+        return this.parent;
+    }
+
+    public Type getType()
+    {
+        return this.getComponent().type;
     }
 }

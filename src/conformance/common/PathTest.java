@@ -103,7 +103,8 @@ public class PathTest extends Test
         // components and strings containing the separator or colon.
         try
         {
-            new Path(new Path(), "");
+            Path noarg = new Path();
+            new Path(noarg, "");
             throw new TestFailed("Path(Path, String) constructor accepted " +
                                  "empty string");
         }

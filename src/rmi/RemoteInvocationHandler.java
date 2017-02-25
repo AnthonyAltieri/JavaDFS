@@ -33,8 +33,6 @@ public class RemoteInvocationHandler<T> implements InvocationHandler, Serializab
 
     public Object invoke(Object proxy, Method m, Object[] args)
         throws Throwable {
-        System.out.println("method: " + m.toString());
-
         String standardMethodResult = isStandardMethod(m);
         if (standardMethodResult != null)
         {

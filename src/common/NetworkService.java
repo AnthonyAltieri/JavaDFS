@@ -1,6 +1,7 @@
 package common;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class NetworkService
 {
-    public static synchronized int findAvailablePort()
+    public static synchronized int findAvailablePort(InetAddress address)
     {
         int STARTING_PORT = 49152;
         int ENDING_PORT = 65535;
@@ -20,7 +21,7 @@ public class NetworkService
         {
             try
             {
-                ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(port, 0, address);
                 if (serverSocket != null)
                 {
                     serverSocket.close();

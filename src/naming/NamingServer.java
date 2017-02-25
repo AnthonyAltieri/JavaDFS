@@ -3,6 +3,7 @@ package naming;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import rmi.*;
 import common.*;
@@ -33,6 +34,15 @@ import storage.*;
  */
 public class NamingServer implements Service, Registration
 {
+    FileSystem fileSystem;
+    HashSet<Storage> registry = new HashSet<>();
+    InetSocketAddress serviceSocketAddress;
+    InetSocketAddress registrationSocketAddress;
+    Skeleton<Service> serviceSkeleton;
+    Skeleton<Registration> registrationSkeleton;
+    boolean isServiceSkeletonStarted;
+    boolean isRegistrationSkeletonStarted;
+
     /** Creates the naming server object.
 
         <p>
@@ -40,7 +50,6 @@ public class NamingServer implements Service, Registration
      */
     public NamingServer()
     {
-        throw new UnsupportedOperationException("not implemented");
     }
 
     /** Starts the naming server.
@@ -54,9 +63,56 @@ public class NamingServer implements Service, Registration
                              started. The user should not attempt to start the
                              server again if an exception occurs.
      */
-    public synchronized void start() throws RMIException
+    public synchronized void start()
+        throws RMIException
     {
-        throw new UnsupportedOperationException("not implemented");
+        try 
+        {
+            this.serviceSocketAddress = new InetSocketAddress(
+                InetAddress.getLocalHost(),
+                NamingStubs.SERVICE_PORT
+            );
+        } 
+        catch (UnknownHostException e) 
+        {
+            throw new RMIException(
+                "could not get local host for service socket address", 
+                e.getCause()
+            );
+        }
+        try 
+        {
+            this.registrationSocketAddress = new InetSocketAddress(
+                InetAddress.getLocalHost(),
+                NamingStubs.REGISTRATION_PORT
+            );
+        }
+        catch (UnknownHostException e)
+        {
+            throw new RMIException(
+                "could not get local host for registration socket address",
+                e.getCause()
+            );
+        }
+        try
+        {
+            this.serviceSkeleton = new Skeleton<Service>(Service.class, this);
+            this.isServiceSkeletonStarted = true;
+        }
+        catch (Exception e)
+        {
+            throw new RMIException("Service Skeleton could not start", e.getCause());
+        }
+
+        try
+        {
+            this.registrationSkeleton = new Skeleton<Registration>(Registration.class, this);
+            this.isRegistrationSkeletonStarted = true;
+        }
+        catch (Exception e)
+        {
+            throw new RMIException("Registration Skeleton could not start", e.getCause());
+        }
     }
 
     /** Stops the naming server.
@@ -70,7 +126,11 @@ public class NamingServer implements Service, Registration
      */
     public void stop()
     {
-        throw new UnsupportedOperationException("not implemented");
+        this.serviceSkeleton.stop();
+        this.isServiceSkeletonStarted = false;
+        this.registrationSkeleton.stop();
+        this.isRegistrationSkeletonStarted = false;
+        stopped(null);
     }
 
     /** Indicates that the server has completely shut down.
@@ -84,6 +144,8 @@ public class NamingServer implements Service, Registration
      */
     protected void stopped(Throwable cause)
     {
+        System.out.println("[NamingServer stopped]");
+        System.out.println((cause == null ? "" : cause.toString()) + "\n");
     }
 
     // The following public methods are documented in Service.java.
@@ -100,15 +162,17 @@ public class NamingServer implements Service, Registration
     }
 
     @Override
-    public boolean isDirectory(Path path) throws FileNotFoundException
+    public boolean isDirectory(Path path)
+        throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.fileSystem.getNode(path).isDirectory();
     }
 
     @Override
-    public String[] list(Path directory) throws FileNotFoundException
+    public String[] list(Path directory)
+        throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.fileSystem.getChildrenStrings(directory);
     }
 
     @Override
@@ -119,28 +183,66 @@ public class NamingServer implements Service, Registration
     }
 
     @Override
-    public boolean createDirectory(Path directory) throws FileNotFoundException
+    public boolean createDirectory(Path directory)
+        throws FileNotFoundException
     {
         throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
-    public boolean delete(Path path) throws FileNotFoundException
+    public boolean delete(Path path)
+        throws FileNotFoundException
     {
         throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
-    public Storage getStorage(Path file) throws FileNotFoundException
+    public Storage getStorage(Path file)
+        throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.fileSystem.getStorage(file);
     }
 
     // The method register is documented in Registration.java.
     @Override
-    public Path[] register(Storage client_stub, Command command_stub,
-                           Path[] files)
+    public Path[] register(Storage client_stub, Command command_stub, Path[] files)
     {
-        throw new UnsupportedOperationException("not implemented");
+        System.err.println("register() in NamingServer");
+        if (client_stub == null)
+            throw new NullPointerException("Storage is null");
+        if (command_stub == null)
+            throw new NullPointerException("Command is null");
+        if (files == null)
+            throw new NullPointerException("Path[] is null");
+
+        if (this.registry.contains(client_stub))
+            throw new IllegalStateException("storage server already registered");
+        this.registry.add(client_stub);
+
+        ArrayList<Path> duplicatePaths = new ArrayList();
+        Arrays.asList(files)
+            .forEach(path -> {
+                System.err.println("checking this path in NS: " + path.toString());
+                try
+                {
+                    if (this.fileSystem.hasPath(path))
+                    {
+                        System.err.println("hasPath() -> true");
+                        duplicatePaths.add(path);
+                    }
+                    else
+                    {
+                        System.err.println("hasPath() -> false");
+                        this.fileSystem.add(path, client_stub);
+                    }
+                }
+                catch (FileNotFoundException e)
+                {
+                    // This should NEVER happen
+                    System.err.println("<ERROR> Path should always be valid for register");
+                    e.printStackTrace();
+                }
+            });
+        return (Path[]) duplicatePaths.toArray();
     }
 }

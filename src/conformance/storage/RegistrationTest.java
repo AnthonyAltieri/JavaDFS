@@ -41,6 +41,8 @@ public class RegistrationTest extends StorageTest
                           new Path("/file3"),
                           new Path("/prune/dir1/file"),
                           new Path("/prune/dir2/file")});
+        System.err.println("\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><>");
+        System.err.println("RegistrationTest Begin");
     }
 
     /** Runs the core of the test.
@@ -50,6 +52,7 @@ public class RegistrationTest extends StorageTest
     @Override
     protected void perform() throws TestFailed
     {
+        System.err.println("perform() \n");
         // The registration server has already checked that the storage server
         // has transmitted the correct file list. Check that the storage server
         // has deleted the files it was commanded to delete by checking the
@@ -69,6 +72,11 @@ public class RegistrationTest extends StorageTest
             throw new TestFailed("cannot list storage server root directory",
                                  e);
         }
+        System.err.println("\nlisted contents");
+        for (Path p : listed)
+        {
+            System.err.println(p.toString());
+        }
 
         if(!TestUtil.sameElements(listed, remaining_files))
         {
@@ -84,5 +92,7 @@ public class RegistrationTest extends StorageTest
             throw new TestFailed("storage server did not prune directories " +
                                  "that contain no files");
         }
+        System.err.println("Registration Test END");
+        System.err.println("<><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n");
     }
 }

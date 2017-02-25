@@ -8,7 +8,7 @@ public class Component
     Type type;
     String name;
 
-    Component(Type type, String name)
+    public Component(Type type, String name)
     {
         this.type = type;
         this.name = name;
@@ -40,5 +40,25 @@ public class Component
     {
         String hashString = "" + this.type + this.name;
         return hashString.hashCode();
+    }
+
+    public boolean isDirectory()
+    {
+        return this.type == Type.DIRECTORY;
+    }
+
+    public boolean isFile()
+    {
+        return this.type == Type.FILE;
+    }
+
+    public boolean isRoot()
+    {
+        return this.type == Type.ROOT;
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 }
