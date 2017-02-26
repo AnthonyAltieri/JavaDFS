@@ -51,6 +51,7 @@ public class ContactTest extends NamingTest
         // Attempt to make the connection.
         try
         {
+            System.err.println("service_socket.connect(new InetSocketAddress(127.0.0.1, " + port + ")");
             service_socket.connect(new InetSocketAddress("127.0.0.1", port));
         }
         catch(Throwable t)

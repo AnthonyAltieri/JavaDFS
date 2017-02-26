@@ -2,59 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ba3296c8-7bc8-4bfb-9c7b-1f6918c87df2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/Get.class" afterPath="$PROJECT_DIR$/production/apps/Get.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/List.class" afterPath="$PROJECT_DIR$/production/apps/List.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/MakeDirectory.class" afterPath="$PROJECT_DIR$/production/apps/MakeDirectory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/Parse.class" afterPath="$PROJECT_DIR$/production/apps/Parse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/PrintWorkingDirectory.class" afterPath="$PROJECT_DIR$/production/apps/PrintWorkingDirectory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/Put.class" afterPath="$PROJECT_DIR$/production/apps/Put.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/Remove.class" afterPath="$PROJECT_DIR$/production/apps/Remove.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/apps/Touch.class" afterPath="$PROJECT_DIR$/production/apps/Touch.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/Component$1.class" afterPath="$PROJECT_DIR$/production/common/Component$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/Component.class" afterPath="$PROJECT_DIR$/production/common/Component.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/FileService.class" afterPath="$PROJECT_DIR$/production/common/FileService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/Path$1.class" afterPath="$PROJECT_DIR$/production/common/Path$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/Path.class" afterPath="$PROJECT_DIR$/production/common/Path.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/common/Type.class" afterPath="$PROJECT_DIR$/production/common/Type.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/conformance/ConformanceTests.class" afterPath="$PROJECT_DIR$/production/conformance/ConformanceTests.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/conformance/storage/RegistrationTest.class" afterPath="$PROJECT_DIR$/production/conformance/storage/RegistrationTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/FileSystem.class" afterPath="$PROJECT_DIR$/production/naming/FileSystem.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/NamingServer.class" afterPath="$PROJECT_DIR$/production/naming/NamingServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/Registration.class" afterPath="$PROJECT_DIR$/production/naming/Registration.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/Service.class" afterPath="$PROJECT_DIR$/production/naming/Service.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/ROR.class" afterPath="$PROJECT_DIR$/production/rmi/ROR.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/RemoteInvocationHandler.class" afterPath="$PROJECT_DIR$/production/rmi/RemoteInvocationHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/Return.class" afterPath="$PROJECT_DIR$/production/rmi/Return.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/Shuttle.class" afterPath="$PROJECT_DIR$/production/rmi/Shuttle.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/Skeleton$1.class" afterPath="$PROJECT_DIR$/production/rmi/Skeleton$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/Skeleton.class" afterPath="$PROJECT_DIR$/production/rmi/Skeleton.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/SkeletonService.class" afterPath="$PROJECT_DIR$/production/rmi/SkeletonService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/Stub.class" afterPath="$PROJECT_DIR$/production/rmi/Stub.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/storage/Command.class" afterPath="$PROJECT_DIR$/production/storage/Command.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/storage/Storage.class" afterPath="$PROJECT_DIR$/production/storage/Storage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/storage/StorageServer.class" afterPath="$PROJECT_DIR$/production/storage/StorageServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/Component.java" afterPath="$PROJECT_DIR$/src/common/Component.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/FileService.java" afterPath="$PROJECT_DIR$/src/common/FileService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/Path.java" afterPath="$PROJECT_DIR$/src/common/Path.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/Type.java" afterPath="$PROJECT_DIR$/src/common/Type.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance/ConformanceTests.java" afterPath="$PROJECT_DIR$/src/conformance/ConformanceTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance/storage/RegistrationTest.java" afterPath="$PROJECT_DIR$/src/conformance/storage/RegistrationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/FileSystem.java" afterPath="$PROJECT_DIR$/src/naming/FileSystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance/naming/ContactTest.java" afterPath="$PROJECT_DIR$/src/conformance/naming/ContactTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/NamingServer.java" afterPath="$PROJECT_DIR$/src/naming/NamingServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/Registration.java" afterPath="$PROJECT_DIR$/src/naming/Registration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/Service.java" afterPath="$PROJECT_DIR$/src/naming/Service.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/ROR.java" afterPath="$PROJECT_DIR$/src/rmi/ROR.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" afterPath="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/Return.java" afterPath="$PROJECT_DIR$/src/rmi/Return.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/Shuttle.java" afterPath="$PROJECT_DIR$/src/rmi/Shuttle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/Skeleton.java" afterPath="$PROJECT_DIR$/src/rmi/Skeleton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/SkeletonService.java" afterPath="$PROJECT_DIR$/src/rmi/SkeletonService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/Stub.java" afterPath="$PROJECT_DIR$/src/rmi/Stub.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/storage/Command.java" afterPath="$PROJECT_DIR$/src/storage/Command.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/storage/Storage.java" afterPath="$PROJECT_DIR$/src/storage/Storage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/storage/StorageServer.java" afterPath="$PROJECT_DIR$/src/storage/StorageServer.java" />
     </list>
     <ignored path="javaDFS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,11 +31,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.45310667">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="StorageServer.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="StorageServer.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/storage/StorageServer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+                <state vertical-scroll-proportion="-0.8221226">
+                  <caret line="126" column="10" selection-start-line="126" selection-start-column="10" selection-end-line="126" selection-end-column="10" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#9589#9595#0" expanded="true" />
@@ -97,11 +46,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ConformanceTests.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="ConformanceTests.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.813154">
-                  <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="NamingTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/conformance/naming/NamingTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -137,11 +96,33 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="DirectoryTest.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="NamingServer.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.74738413">
+                  <caret line="86" column="29" selection-start-line="86" selection-start-column="29" selection-end-line="86" selection-end-column="29" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ContactTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/conformance/naming/ContactTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="54" column="76" selection-start-line="54" selection-start-column="76" selection-end-line="54" selection-end-column="76" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DirectoryTest.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/conformance/storage/DirectoryTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.6352766">
-                  <caret line="265" column="0" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="227" column="10" selection-start-line="227" selection-start-column="10" selection-end-line="227" selection-end-column="10" />
                   <folding />
                 </state>
               </provider>
@@ -244,7 +225,6 @@
         <option value="$PROJECT_DIR$/src/rmi/Return.java" />
         <option value="$PROJECT_DIR$/src/common/Type.java" />
         <option value="$PROJECT_DIR$/src/naming/FileSystem.java" />
-        <option value="$PROJECT_DIR$/src/naming/NamingServer.java" />
         <option value="$PROJECT_DIR$/src/conformance/storage/AccessTest.java" />
         <option value="$PROJECT_DIR$/src/rmi/SkeletonService.java" />
         <option value="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" />
@@ -254,6 +234,8 @@
         <option value="$PROJECT_DIR$/src/storage/StorageServer.java" />
         <option value="$PROJECT_DIR$/src/common/FileService.java" />
         <option value="$PROJECT_DIR$/src/conformance/ConformanceTests.java" />
+        <option value="$PROJECT_DIR$/src/conformance/naming/ContactTest.java" />
+        <option value="$PROJECT_DIR$/src/naming/NamingServer.java" />
       </list>
     </option>
   </component>
@@ -347,7 +329,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
+              <option name="myItemId" value="naming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -770,12 +752,12 @@
       <updated>1487917600048</updated>
       <workItem from="1487917601831" duration="11074000" />
       <workItem from="1487967865076" duration="234000" />
-      <workItem from="1487968260414" duration="47220000" />
+      <workItem from="1487968260414" duration="48101000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58528000" />
+    <option name="totallyTimeSpent" value="59409000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1920" y="-35" width="1920" height="1053" extended-state="6" />
@@ -827,27 +809,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/build/Makefile.separator">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/build/PathSeparator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rmi/ListenerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/conformance/naming/TestStorageServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1141,16 +1102,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1221,14 +1172,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance/storage/DirectoryTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6352766">
-          <caret line="265" column="0" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/naming/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.64424515">
@@ -1251,10 +1194,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/storage/StorageServer.java">
+    <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/storage/DirectoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="227" column="10" selection-start-line="227" selection-start-column="10" selection-end-line="227" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/naming/NamingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/storage/StorageServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.8221226">
+          <caret line="126" column="10" selection-start-line="126" selection-start-column="10" selection-end-line="126" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#9589#9595#0" expanded="true" />
@@ -1264,11 +1231,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_74.jdk/Contents/Home/src.zip!/java/net/Socket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.813154">
-          <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+        <state vertical-scroll-proportion="-0.11509716">
+          <caret line="557" column="16" selection-start-line="557" selection-start-column="16" selection-end-line="557" selection-end-column="16" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/naming/ContactTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="76" selection-start-line="54" selection-start-column="76" selection-end-line="54" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74738413">
+          <caret line="86" column="29" selection-start-line="86" selection-start-column="29" selection-end-line="86" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

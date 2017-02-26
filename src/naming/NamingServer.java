@@ -68,52 +68,26 @@ public class NamingServer
         throws RMIException
     {
         this.initializeSkeletons();
-        Runnable registrationRunnable = new Runnable() {
-            @Override
-            public void run() {
-                while (!Thread.currentThread().isInterrupted())
-                {
-
-                }
-            }
-        };
-
     }
 
     private void initializeSkeletons()
         throws RMIException
     {
+        this.serviceSocketAddress = new InetSocketAddress(
+            "127.0.0.1",
+            NamingStubs.SERVICE_PORT
+        );
+        this.registrationSocketAddress = new InetSocketAddress(
+            "127.0.0.1",
+            NamingStubs.REGISTRATION_PORT
+        );
         try
         {
-            this.serviceSocketAddress = new InetSocketAddress(
-                InetAddress.getLocalHost(),
-                NamingStubs.SERVICE_PORT
+            this.serviceSkeleton = new Skeleton<Service>(
+                Service.class,
+                this,
+                this.serviceSocketAddress
             );
-        }
-        catch (UnknownHostException e)
-        {
-            throw new RMIException(
-                "could not get local host for service socket address",
-                e.getCause()
-            );
-        }
-        try
-        {
-            this.registrationSocketAddress = new InetSocketAddress(
-                InetAddress.getLocalHost(),
-                NamingStubs.REGISTRATION_PORT
-            );
-        }
-        catch (UnknownHostException e)
-        {
-            throw new RMIException(
-                "could not get local host for registration socket address",
-                e.getCause()
-            );
-        }
-        try
-        {
-            this.serviceSkeleton = new Skeleton<Service>(Service.class, this);
             this.serviceSkeleton.start();
             System.err.println("Service Skeleton started: " + this.serviceSkeleton);
             this.isServiceSkeletonStarted = true;
@@ -125,7 +99,11 @@ public class NamingServer
 
         try
         {
-            this.registrationSkeleton = new Skeleton<Registration>(Registration.class, this);
+            this.registrationSkeleton = new Skeleton<Registration>(
+                Registration.class,
+                this,
+                this.registrationSocketAddress
+            );
             this.registrationSkeleton.start();
             System.err.println("Registration Skeleton started: " + this.registrationSkeleton);
             this.isRegistrationSkeletonStarted = true;
