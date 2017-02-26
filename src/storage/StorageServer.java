@@ -3,7 +3,7 @@ package storage;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import common.*;
 import rmi.*;
@@ -16,7 +16,8 @@ import naming.*;
     through a storage server are those accessible under a given directory of the
     local filesystem.
  */
-public class StorageServer implements Storage, Command
+public class StorageServer
+    implements Storage, Command, Serializable
 {
     static final int SYSTEM_DECIDE_PORT = 0;
     File root;
@@ -24,15 +25,13 @@ public class StorageServer implements Storage, Command
     int commandPort;
     boolean shouldFindClientPort;
     boolean shouldFindCommandPort;
-    List<Path> files = new ArrayList<>();
-    Thread clientMain;
-    Thread commandMain;
     InetSocketAddress clientSocketAddress;
     InetSocketAddress commandSocketAddress;
     Skeleton<Storage> storageSkeleton;
     Skeleton<Command> commandSkeleton;
     boolean isStorageSkeletonStarted;
     boolean isCommandSkeletonStarted;
+    Registration registration;
 
 
     /** Creates a storage server, given a directory on the local filesystem, and
@@ -121,6 +120,33 @@ public class StorageServer implements Storage, Command
         if (FileService.isFile(this.root.getPath()))
             throw new FileNotFoundException("root cannot be a file");
 
+        this.initializeSkeletons(hostname);
+
+        Storage storage = null;
+        Command command = null;
+        try
+        {
+            storage = Stub.create(Storage.class, this.clientSocketAddress);
+            command = Stub.create(Command.class, this.commandSocketAddress);
+        }
+        catch (Throwable throwable)
+        {
+            throw new RMIException(throwable.getMessage(), throwable.getCause());
+        }
+        Path[] duplicates = naming_server.register(
+            storage,
+            command,
+            Path.list(this.root)
+        );
+        for (Path path : duplicates)
+            this.delete(path);
+        FileService.deleteEmptyDirectories(this.root.getPath());
+    }
+
+
+    private void initializeSkeletons(String hostname)
+        throws UnknownHostException, RMIException
+    {
         InetAddress clientAddress = InetAddress.getByName(hostname);
         if (this.shouldFindClientPort)
         {
@@ -148,6 +174,7 @@ public class StorageServer implements Storage, Command
         this.commandSkeleton = new Skeleton<Command>(Command.class, this, this.commandSocketAddress);
         this.commandSkeleton.start();
         this.isCommandSkeletonStarted = true;
+
     }
 
     /** Stops the storage server.
@@ -176,18 +203,25 @@ public class StorageServer implements Storage, Command
 
     // The following methods are documented in Storage.java.
     @Override
-    public synchronized long size(Path file) throws FileNotFoundException
+    public synchronized long size(Path file)
+        throws FileNotFoundException
     {
-        if (!FileService.doesExist(file.getLocalPath()))
+        if (file == null)
+            throw new NullPointerException("file is null");
+        if (!FileService.doesExist(getLocalPath(file)))
             throw new FileNotFoundException("file does not exist");
-        return FileService.getSize(file.getLocalPath());
+        if (FileService.isDirectory(getLocalPath(file)))
+            throw new FileNotFoundException("path refers to directory");
+        return FileService.getSize(getLocalPath(file));
     }
 
     @Override
     public synchronized byte[] read(Path file, long offset, int length)
         throws FileNotFoundException, IOException
     {
-        if (!FileService.doesExist(file.getLocalPath()))
+        if (file == null)
+            throw new NullPointerException("path is null");
+        if (!FileService.doesExist(getLocalPath(file)))
             throw new FileNotFoundException("file does not exist");
         if (length < 0)
             throw new IndexOutOfBoundsException("length can't be negative");
@@ -196,7 +230,7 @@ public class StorageServer implements Storage, Command
         if ((offset + length) > size(file))
             throw new IndexOutOfBoundsException("offset and length exceed file size");
 
-        FileInputStream fis = new FileInputStream(FileService.getFile(file.getLocalPath()));
+        FileInputStream fis = new FileInputStream(FileService.getFile(getLocalPath(file)));
         byte[] buffer = new byte[length];
         if (fis.read(buffer, (int) offset, length) != length)
             throw new IOException("Did not read the desired length");
@@ -208,35 +242,96 @@ public class StorageServer implements Storage, Command
     public synchronized void write(Path file, long offset, byte[] data)
         throws FileNotFoundException, IOException
     {
-        if (!FileService.doesExist(file.getLocalPath()))
+        if (file == null)
+            throw new NullPointerException("path is null");
+        if (!FileService.doesExist(getLocalPath(file)))
             throw new FileNotFoundException("file does not exist");
         if (offset < 0)
             throw new IndexOutOfBoundsException("negative offset");
-        FileOutputStream fos = new FileOutputStream(FileService.getFile(file.getLocalPath()));
+
+        long fileLength = FileService.getFile(getLocalPath(file)).length();
+        if ((offset + data.length) > fileLength)
+        {
+            long dataWritten = 0;
+            ArrayList<Byte> appendedData = new ArrayList<Byte>();
+
+            // If the offset is past the file length, fill in the space with 0s
+            if (offset > fileLength)
+            {
+                long zeroPaddingLength = offset - fileLength;
+                for (int i = 0 ; i < zeroPaddingLength ; i++)
+                    appendedData.add((byte) 0);
+            }
+            else
+            {
+                FileOutputStream fos = new FileOutputStream(FileService.getFile(getLocalPath(file)));
+                fos.write(data, (int) offset, (int) (fileLength - offset));
+                fos.flush();
+                fos.close();
+                dataWritten += (fileLength - offset);
+            }
+
+            // Put the data to be appended in the appendedData ArrayList
+            for (long i = dataWritten ; i < data.length ; i++)
+            {
+                appendedData.add(data[(int) i]);
+            }
+            boolean FOS_APPEND = true;
+            FileOutputStream appendFos = new FileOutputStream(
+                FileService.getFile(getLocalPath(file)),
+                FOS_APPEND
+            );
+            byte[] toWrite = new byte[appendedData.size()];
+            for (int i = 0 ; i < appendedData.size() ; i++)
+            {
+                toWrite[i] = appendedData.get(i);
+            }
+            appendFos.write(toWrite, 0, appendedData.size());
+            appendFos.flush();
+            appendFos.close();
+            return;
+        }
+
+        FileOutputStream fos = new FileOutputStream(FileService.getFile(getLocalPath(file)));
         fos.write(data, (int) offset, data.length);
-        fos.close();
         fos.flush();
+        fos.close();
     }
 
     // The following methods are documented in Command.java.
     @Override
     public synchronized boolean create(Path file)
-        throws IOException
     {
-        return FileService.getFile(file.getLocalPath()).createNewFile();
+        if (file == null)
+            throw new NullPointerException("file is null");
+        if (file.toString().equals("/"))
+            return false;
+        return FileService.createFile(new Path(getLocalPath(file)));
     }
 
     @Override
     public synchronized boolean delete(Path file)
     {
-        return FileService.getFile(file.getLocalPath()).delete();
+        if (file == null)
+            throw new NullPointerException("file is null");
+        if (file.toString().equals("/"))
+            return false;
+        return FileService.deleteFile(getLocalPath(file));
     }
 
     @Override
     public synchronized boolean copy(Path file, Storage server)
         throws RMIException, FileNotFoundException, IOException
     {
+        if (file == null)
+            throw new NullPointerException("file is null");
+
         throw new UnsupportedOperationException("not implemented");
+    }
+
+    private String getLocalPath(Path path)
+    {
+        return this.root.getPath() + path;
     }
 
 }

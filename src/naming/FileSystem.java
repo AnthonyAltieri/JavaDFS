@@ -49,21 +49,7 @@ public class FileSystem
     public FileNode getNode(Path path)
         throws FileNotFoundException
     {
-        if (this.root == null)
-            throw new FileNotFoundException("root is null");
-        FileNode focus = this.root;
-        ArrayList<Component> components = (ArrayList<Component>) path.getComponents();
-        while (components.size() > 0)
-        {
-            Component nextComponent = components.remove(0);
-            if (components.size() > 0 && nextComponent.isFile())
-                throw new FileNotFoundException("cannot traverse to file's children");
-            FileNode nextNode = focus.getChildren().get(nextComponent);
-            if (nextNode == null)
-                throw new FileNotFoundException("provided path is not valid for add");
-            focus = nextNode;
-        }
-        return focus;
+        return new FileNode(null, null, null);
     }
 
     public String[] getChildrenStrings(Path path)

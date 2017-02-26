@@ -25,5 +25,24 @@ class Shuttle implements Serializable
         this.paramTypes = method.getParameterTypes();
         this.name = method.getName();
     }
+
+    public String toString()
+    {
+        String string = "[SHUTTLE] " + methodString + "(";
+        if (this.args == null)
+        {
+            string += ")";
+            return string;
+        }
+        for (int i = 0 ; i < this.args.length ; i++)
+        {
+            Pair<Type, Object> pair = this.args[i];
+            string += "{" + pair.getKey().toString() + "} {" + pair.getValue().toString() + "}";
+            if (i != this.args.length - 1)
+                string += ", ";
+        }
+        string += ")";
+        return string;
+    }
 }
 

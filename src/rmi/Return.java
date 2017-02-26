@@ -22,4 +22,9 @@ public class Return<T> implements Serializable
         this.rmiException = rmiException;
     }
 
+    public String toString()
+    {
+        return type.getClass().getName() + " " + value.toString();
+    }
+
 }

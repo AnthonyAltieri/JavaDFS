@@ -32,7 +32,8 @@ import storage.*;
     registration interfaces are available at well-known ports defined in
     <code>NamingStubs</code>.
  */
-public class NamingServer implements Service, Registration
+public class NamingServer
+    implements Service, Registration, Serializable
 {
     FileSystem fileSystem;
     HashSet<Storage> registry = new HashSet<>();
@@ -66,21 +67,37 @@ public class NamingServer implements Service, Registration
     public synchronized void start()
         throws RMIException
     {
-        try 
+        this.initializeSkeletons();
+        Runnable registrationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted())
+                {
+
+                }
+            }
+        };
+
+    }
+
+    private void initializeSkeletons()
+        throws RMIException
+    {
+        try
         {
             this.serviceSocketAddress = new InetSocketAddress(
                 InetAddress.getLocalHost(),
                 NamingStubs.SERVICE_PORT
             );
-        } 
-        catch (UnknownHostException e) 
+        }
+        catch (UnknownHostException e)
         {
             throw new RMIException(
-                "could not get local host for service socket address", 
+                "could not get local host for service socket address",
                 e.getCause()
             );
         }
-        try 
+        try
         {
             this.registrationSocketAddress = new InetSocketAddress(
                 InetAddress.getLocalHost(),
@@ -97,6 +114,8 @@ public class NamingServer implements Service, Registration
         try
         {
             this.serviceSkeleton = new Skeleton<Service>(Service.class, this);
+            this.serviceSkeleton.start();
+            System.err.println("Service Skeleton started: " + this.serviceSkeleton);
             this.isServiceSkeletonStarted = true;
         }
         catch (Exception e)
@@ -107,12 +126,15 @@ public class NamingServer implements Service, Registration
         try
         {
             this.registrationSkeleton = new Skeleton<Registration>(Registration.class, this);
+            this.registrationSkeleton.start();
+            System.err.println("Registration Skeleton started: " + this.registrationSkeleton);
             this.isRegistrationSkeletonStarted = true;
         }
         catch (Exception e)
         {
             throw new RMIException("Registration Skeleton could not start", e.getCause());
         }
+
     }
 
     /** Stops the naming server.
@@ -165,14 +187,14 @@ public class NamingServer implements Service, Registration
     public boolean isDirectory(Path path)
         throws FileNotFoundException
     {
-        return this.fileSystem.getNode(path).isDirectory();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public String[] list(Path directory)
         throws FileNotFoundException
     {
-        return this.fileSystem.getChildrenStrings(directory);
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -200,7 +222,7 @@ public class NamingServer implements Service, Registration
     public Storage getStorage(Path file)
         throws FileNotFoundException
     {
-        return this.fileSystem.getStorage(file);
+        throw new UnsupportedOperationException("not implemented");
     }
 
     // The method register is documented in Registration.java.

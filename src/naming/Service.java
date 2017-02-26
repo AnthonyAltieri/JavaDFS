@@ -15,6 +15,7 @@ import storage.Storage;
     object: either a file or a directory.
  */
 public interface Service
+    extends Serializable
 {
     /** Locks a file or directory for either shared or exclusive access.
 

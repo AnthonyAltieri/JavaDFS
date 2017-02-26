@@ -179,7 +179,6 @@ public class Skeleton<T>
      */
     protected void service_error(RMIException exception)
     {
-        exception.printStackTrace();
     }
 
     /** Starts the skeleton server.

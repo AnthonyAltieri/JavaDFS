@@ -1,9 +1,12 @@
 package common;
 
+import java.io.Serializable;
+
 /**
  * Created by anthonyaltieri on 2/23/17.
  */
 public class Component
+    implements Serializable
 {
     Type type;
     String name;
@@ -20,14 +23,13 @@ public class Component
         String typeString = null;
         switch (this.type)
         {
-            case FILE:
-                typeString = "File";
-                break;
-            case DIRECTORY:
-                typeString = "Directory";
-                break;
+            case ROOT:
+                return "/";
+            case CHILD:
+                return this.name;
+            default:
+                return "";
         }
-        return typeString + ": " + this.name;
     }
 
     public boolean equals(Object o)
@@ -40,16 +42,6 @@ public class Component
     {
         String hashString = "" + this.type + this.name;
         return hashString.hashCode();
-    }
-
-    public boolean isDirectory()
-    {
-        return this.type == Type.DIRECTORY;
-    }
-
-    public boolean isFile()
-    {
-        return this.type == Type.FILE;
     }
 
     public boolean isRoot()

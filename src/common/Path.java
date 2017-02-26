@@ -1,7 +1,6 @@
 package common;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.*;
 
 /** Distributed filesystem paths.
@@ -23,7 +22,7 @@ import java.util.*;
 public class Path
     implements Iterable<String>, Comparable<Path>, Serializable
 {
-    List<Component> components = new LinkedList();
+    ArrayList<Component> components = new ArrayList<>();
     String localPath;
     Path parent;
 
@@ -56,7 +55,7 @@ public class Path
         if ((path.toString() + component).charAt(0) != '/')
             throw new IllegalArgumentException("path didn't start with character `/`");
 
-        Component comp = new Component(Type.UNKOWN, component);
+        Component comp = new Component(Type.CHILD, component);
         path.components.forEach(c -> {
             this.components.add(new Component(c.type, c.name));
         });
@@ -90,7 +89,7 @@ public class Path
         {
             if (split[i].equals("")) continue;
             this.components.add(new Component(
-                ((i == split.length - 1) ? Type.UNKOWN : Type.DIRECTORY),
+                ((i == split.length - 1) ? Type.CHILD : Type.CHILD),
                 split[i]
             ));
         }
@@ -344,7 +343,7 @@ public class Path
      */
     @Override
     public boolean equals(Object other) {
-        return other instanceof Path && this.toString().equals(other.toString());
+        return other instanceof Path && (this.hashCode() == other.hashCode());
     }
 
     /** Returns the hash code of the path. */
@@ -388,19 +387,19 @@ public class Path
         return this.localPath;
     }
 
-    public List<Component> getComponents()
+    public ArrayList<Component> getComponents()
     {
         return this.components;
     }
 
     public boolean isDirectory()
     {
-        return this.components.get(this.components.size() - 1).type == Type.DIRECTORY;
+        return false;
     }
 
     public boolean isFile()
     {
-        return this.components.get(this.components.size() - 1).type == Type.FILE;
+        return false;
     }
 
     public Component getComponent()

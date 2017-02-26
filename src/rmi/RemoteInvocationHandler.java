@@ -16,7 +16,8 @@ import java.util.Arrays;
 /**
  * Created by bharatbatra on 2/5/17.
  */
-public class RemoteInvocationHandler<T> implements InvocationHandler, Serializable
+public class RemoteInvocationHandler<T>
+    implements InvocationHandler, Serializable
 {
     InetSocketAddress socketAddress;
     Class<T> c;
@@ -32,7 +33,8 @@ public class RemoteInvocationHandler<T> implements InvocationHandler, Serializab
     }
 
     public Object invoke(Object proxy, Method m, Object[] args)
-        throws Throwable {
+        throws Throwable
+    {
         String standardMethodResult = isStandardMethod(m);
         if (standardMethodResult != null)
         {

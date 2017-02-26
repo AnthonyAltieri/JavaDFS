@@ -1,5 +1,6 @@
 package rmi;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
@@ -7,6 +8,7 @@ import java.lang.reflect.Proxy;
  * Created by anthonyaltieri on 2/12/17.
  */
 public class ROR extends Proxy
+    implements Serializable
 {
     /**
      * Constructs a new {@code Proxy} instance from a subclass

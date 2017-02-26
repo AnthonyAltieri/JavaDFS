@@ -13,6 +13,7 @@ import rmi.RMIException;
     security manager on the server does not allow an operation.
  */
 public interface Storage
+    extends Serializable
 {
     /** Returns the length of a file, in bytes.
 

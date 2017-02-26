@@ -17,6 +17,7 @@ import rmi.RMIException;
     security manager on the server does not allow an operation.
  */
 public interface Command
+    extends Serializable
 {
     /** Creates a file on the storage server.
 

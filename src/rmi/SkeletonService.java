@@ -93,6 +93,7 @@ public class SkeletonService<T> {
         catch (Exception e)
         {
             RMIException rmiException = new RMIException(e.getMessage(), e.getCause());
+            e.printStackTrace();
             throw rmiException;
         }
         return foundMethod;

@@ -4,12 +4,15 @@ import common.*;
 import storage.*;
 import rmi.RMIException;
 
+import java.io.Serializable;
+
 /** Naming server registration interface.
 
     <p>
     This interface is used once, on startup, by each storage server.
  */
 public interface Registration
+    extends Serializable
 {
     /** Registers a storage server with the naming server.
 
