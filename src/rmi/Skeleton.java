@@ -196,7 +196,6 @@ public class Skeleton<T>
      */
     public synchronized void start() throws RMIException
     {
-        print();
         if (this.isStarted()) throw new RMIException("skeleton already started");
         try
         {
@@ -255,7 +254,7 @@ public class Skeleton<T>
     {
         if (isLocalHost)
         {
-            int port = SkeletonService.findAvailablePort();
+            int port = SkeletonService.findAvailablePort(InetAddress.getLocalHost());
             if (port == -1) throw new RMIException("could not find available port");
             return new InetSocketAddress(InetAddress.getLocalHost(), port);
         }
@@ -377,30 +376,5 @@ public class Skeleton<T>
         return this.isStarted;
     }
 
-    private void print()
-    {
-        String heading = "[Skeleton]==========================================================|";
-        int lineLength = heading.length();
 
-        String serverSocketString = this.serverSocket == null
-            ? "null"
-            : this.serverSocket.toString();
-    }
-
-    private String getLine(String string, int lineLength)
-    {
-        String line = "|";
-        line += string;
-        line += " ";
-        for (int i = 0 ; i < (lineLength - string.length() - 3) ; i++)
-        {
-            line += "-";
-        }
-        line += "|";
-        return line;
-    }
-//    private Thread listenerThread = null;
-//    private boolean isStarted = false;
-//    private boolean shouldListenerRun;
-//    private ServerSocket serverSocket;
 }

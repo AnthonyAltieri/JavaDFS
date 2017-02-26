@@ -1,6 +1,7 @@
 package naming;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -35,7 +36,10 @@ import storage.*;
 public class NamingServer
     implements Service, Registration, Serializable
 {
-    FileSystem fileSystem;
+    private final boolean IS_FILE = true;
+    private final boolean IS_DIRECTORY = false;
+
+    FileSystem fileSystem = new FileSystem();
     HashSet<Storage> registry = new HashSet<>();
     InetSocketAddress serviceSocketAddress;
     InetSocketAddress registrationSocketAddress;
@@ -89,7 +93,6 @@ public class NamingServer
                 this.serviceSocketAddress
             );
             this.serviceSkeleton.start();
-            System.err.println("Service Skeleton started: " + this.serviceSkeleton);
             this.isServiceSkeletonStarted = true;
         }
         catch (Exception e)
@@ -105,7 +108,6 @@ public class NamingServer
                 this.registrationSocketAddress
             );
             this.registrationSkeleton.start();
-            System.err.println("Registration Skeleton started: " + this.registrationSkeleton);
             this.isRegistrationSkeletonStarted = true;
         }
         catch (Exception e)
@@ -165,49 +167,75 @@ public class NamingServer
     public boolean isDirectory(Path path)
         throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.fileSystem.isDirectory(path);
     }
 
     @Override
     public String[] list(Path directory)
         throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (!this.fileSystem.hasPath(directory))
+            throw new FileNotFoundException("directory does not exist");
+        return this.fileSystem.getChildrenStrings(directory);
     }
 
     @Override
     public boolean createFile(Path file)
         throws RMIException, FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.create(file, IS_FILE);
     }
+
 
     @Override
     public boolean createDirectory(Path directory)
-        throws FileNotFoundException
+        throws  RMIException, FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        return this.create(directory, IS_DIRECTORY);
+    }
+
+    private boolean create(Path path, boolean isFile)
+        throws RMIException, FileNotFoundException {
+        if (!this.fileSystem.hasPath(path))
+            throw new FileNotFoundException("path does not exist");
+        if (path.isDirectory() && isFile)
+            return false;
+        try
+        {
+            this.fileSystem.getNode(path).getCommand().create(path);
+            return true;
+        }
+        catch (IOException e)
+        {
+            return false;
+        }
+
     }
 
     @Override
     public boolean delete(Path path)
         throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (!this.fileSystem.hasPath(path))
+            throw new FileNotFoundException("path does not exist");
+        return this.fileSystem.remove(path);
     }
+
 
     @Override
     public Storage getStorage(Path file)
         throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        if (!this.fileSystem.hasPath(file))
+            throw new FileNotFoundException("path does not exist");
+        return this.fileSystem.getNode(file).getStorage();
     }
 
     // The method register is documented in Registration.java.
     @Override
     public Path[] register(Storage client_stub, Command command_stub, Path[] files)
+        throws IllegalStateException, NullPointerException
     {
-        System.err.println("register() in NamingServer");
         if (client_stub == null)
             throw new NullPointerException("Storage is null");
         if (command_stub == null)
@@ -219,30 +247,53 @@ public class NamingServer
             throw new IllegalStateException("storage server already registered");
         this.registry.add(client_stub);
 
-        ArrayList<Path> duplicatePaths = new ArrayList();
-        Arrays.asList(files)
-            .forEach(path -> {
-                System.err.println("checking this path in NS: " + path.toString());
-                try
+        HashSet<Path> allPaths = new HashSet<>();
+        ArrayList<Path> duplicatePaths = new ArrayList<Path>();
+        for (Path path : files)
+        {
+            if (path.toString().equals("/"))
+                continue;
+            try
+            {
+                if (this.fileSystem.hasPath(path))
                 {
-                    if (this.fileSystem.hasPath(path))
-                    {
-                        System.err.println("hasPath() -> true");
-                        duplicatePaths.add(path);
-                    }
-                    else
-                    {
-                        System.err.println("hasPath() -> false");
-                        this.fileSystem.add(path, client_stub);
-                    }
+                    duplicatePaths.add(path);
                 }
-                catch (FileNotFoundException e)
+                else
                 {
-                    // This should NEVER happen
-                    System.err.println("<ERROR> Path should always be valid for register");
-                    e.printStackTrace();
+//                    ArrayList<Path> subPaths = path.getSubPaths();
+//                    // Ignore the root
+//                    System.err.println("path: " + path);
+//                    for (int i = 1 ; i < subPaths.size() ; i++)
+//                    {
+//                        Path p = subPaths.get(i);
+//                        System.err.println("subpath: " + p);
+//                        if (!this.fileSystem.hasPath(p))
+//                        {
+//                            Type pathType = (i == subPaths.size() - 1)
+//                                ? Type.FILE
+//                                : Type.DIRECTORY;
+//                            p.setType(pathType);
+//                            String typeString = (pathType == Type.FILE) ? "FILE" : "DIRECTORY";
+//                            System.err.println("adding [" + typeString + "]: " + p);
+//                            this.fileSystem.add(p, client_stub, command_stub);
+//                        }
+//                        else
+//                        {
+//                            System.err.println("HAS PATH: " + p);
+//                        }
+//                    }
+                    this.fileSystem.add(path, client_stub, command_stub);
                 }
-            });
-        return (Path[]) duplicatePaths.toArray();
+            }
+            catch (FileNotFoundException e)
+            {
+                // This should NEVER happen
+                System.err.println("<ERROR> Path should always be valid for register");
+                e.printStackTrace();
+            }
+
+        }
+        return duplicatePaths.toArray(new Path[duplicatePaths.size()]);
     }
 }

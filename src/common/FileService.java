@@ -40,20 +40,14 @@ public class FileService
     {
         if (doesExist(path.toString()))
             return false;
-        ArrayList<Component> components = path.getComponents();
-        ArrayList<Path> paths = new ArrayList<>();
-        paths.add(new Path(components.get(0).toString()));
-        for (int i = 1 ; i < (components.size()); i++)
+        ArrayList<Path> subPaths = path.getSubPaths();
+        for (int i = 0 ; i < subPaths.size() ; i++)
         {
-            paths.add(new Path(paths.get(i - 1), components.get(i).toString()));
-        }
-        for (int i = 0 ; i < paths.size() ; i++)
-        {
-            Path p = paths.get(i);
+            Path p = subPaths.get(i);
             File file = new File(p.toString());
             if (!file.exists())
             {
-                if (i != (paths.size() - 1))
+                if (i != (subPaths.size() - 1))
                 {
                     boolean result = file.mkdir();
                     if (!result)

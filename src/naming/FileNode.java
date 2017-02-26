@@ -2,6 +2,7 @@ package naming;
 
 import common.Component;
 import common.Path;
+import storage.Command;
 import storage.Storage;
 
 import java.util.ArrayList;
@@ -15,14 +16,15 @@ public class FileNode
 {
     Path path;
     Storage storage;
+    Command command;
     FileNode parent;
     Hashtable<Path, FileNode> children = new Hashtable<>();
 
-    FileNode(Path path, Storage storage, FileNode parent)
+    FileNode(Path path, Storage storage, Command command)
     {
         this.path = path;
         this.storage = storage;
-        this.parent = parent;
+        this.command = command;
     }
 
     public Path getPath()
@@ -35,9 +37,9 @@ public class FileNode
         return this.storage;
     }
 
-    public FileNode getParent()
+    public Command getCommand()
     {
-        return this.parent;
+        return this.command;
     }
 
     public Hashtable<Path, FileNode> getChildren()

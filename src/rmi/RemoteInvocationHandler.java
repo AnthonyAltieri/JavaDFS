@@ -21,14 +21,12 @@ public class RemoteInvocationHandler<T>
 {
     InetSocketAddress socketAddress;
     Class<T> c;
-    Skeleton<T> skeleton;
 
     public RemoteInvocationHandler(Class<T> c, Skeleton<T> skeleton, InetSocketAddress socketAddress)
     {
         if (c == null) throw new NullPointerException("class is null");
         if (socketAddress == null) throw new NullPointerException("InetSocketAddress is null");
         this.c = c;
-        this.skeleton = skeleton;
         this.socketAddress = socketAddress;
     }
 
@@ -104,6 +102,8 @@ public class RemoteInvocationHandler<T>
         }
         catch (IOException e)
         {
+            e.printStackTrace();
+            System.err.print(shuttle);
             throw new RMIException("stream problem", e.getCause());
         }
         catch (ClassNotFoundException e)

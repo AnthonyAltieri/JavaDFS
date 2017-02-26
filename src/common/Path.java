@@ -24,15 +24,15 @@ public class Path
 {
     ArrayList<Component> components = new ArrayList<>();
     String localPath;
-    Path parent;
+    Type type;
 
 
     /** Creates a new path which represents the root directory. */
     public Path()
     {
-        Component component = new Component(Type.ROOT, "ROOT");
-        components.add(component);
-        this.parent = null;
+        Component component = new Component("/");
+        this.type = Type.ROOT;
+        this.components.add(component);
     }
 
     /** Creates a new path by appending the given component to an existing path.
@@ -55,12 +55,11 @@ public class Path
         if ((path.toString() + component).charAt(0) != '/')
             throw new IllegalArgumentException("path didn't start with character `/`");
 
-        Component comp = new Component(Type.CHILD, component);
+        Component comp = new Component(component);
         path.components.forEach(c -> {
-            this.components.add(new Component(c.type, c.name));
+            this.components.add(new Component(c.name));
         });
         this.components.add(comp);
-        this.parent = path;
     }
 
     /** Creates a new path from a path string.
@@ -83,16 +82,15 @@ public class Path
             throw new IllegalArgumentException("component had character `:`");
         if (path.charAt(0) != '/')
             throw new IllegalArgumentException("component didn't start with character `/`");
-        this.components.add(new Component(Type.ROOT, "ROOT"));
+        this.components.add(new Component("/"));
         String[] split = path.split("/");
         for (int i = 1 ; i < split.length ; i++)
         {
             if (split[i].equals("")) continue;
-            this.components.add(new Component(
-                ((i == split.length - 1) ? Type.CHILD : Type.CHILD),
-                split[i]
-            ));
+            this.components.add(new Component(split[i]));
         }
+        if (path.equals("/"))
+            this.type = Type.ROOT;
     }
 
     /** Returns an iterator over the components of the path.
@@ -109,7 +107,7 @@ public class Path
         ArrayList<String> componentStrings = new ArrayList<>();
         for (int i = 0 ; i < this.components.size() ; i++)
         {
-            componentStrings.add(new String(this.components.get(i).getName()));
+            componentStrings.add(new String(this.components.get(i).toString()));
         }
         return new Iterator<String>() {
             int index = 1;
@@ -220,7 +218,7 @@ public class Path
      */
     public boolean isRoot()
     {
-        return this.getComponent().isRoot();
+        return this.type == Type.ROOT;
     }
 
     /** Returns the path to the parent of this path.
@@ -230,14 +228,16 @@ public class Path
      */
     public Path parent()
     {
-        if (this.getComponent().isRoot())
+        if (this.isRoot())
             throw new IllegalArgumentException("cannot call last() on root");
         String parentString = "/";
         for (int i = 1 ; i < this.components.size() - 1 ; i++)
         {
-            parentString += this.components.get(i).getName();
+            parentString += this.components.get(i).toString();
         }
-        return new Path(parentString);
+        Path parent = new Path(parentString);
+        parent.type = Type.DIRECTORY;
+        return parent;
     }
 
     /** Returns the last component in the path.
@@ -248,9 +248,9 @@ public class Path
      */
     public String last()
     {
-        if (this.getComponent().isRoot())
+        if (this.isRoot())
             throw new IllegalArgumentException("cannot call last() on root");
-        return this.getComponent().getName();
+        return this.getComponent().toString();
     }
 
     /** Determines if the given path is a subpath of this path.
@@ -364,20 +364,13 @@ public class Path
     @Override
     public String toString()
     {
-        String string = "";
-        for (int i = 0 ; i < this.components.size() ; i++)
+        String string = "/";
+        for (int i = 1 ; i < this.components.size() ; i++)
         {
             Component component = this.components.get(i);
-            if (component.getName().equals("ROOT"))
-            {
+            string += component.toString();
+            if (i != this.components.size() - 1)
                 string += "/";
-            }
-            else
-            {
-                string += component.getName();
-                if (i != this.components.size() - 1)
-                    string += "/";
-            }
         }
         return string;
     }
@@ -394,12 +387,12 @@ public class Path
 
     public boolean isDirectory()
     {
-        return false;
+        return this.type == Type.ROOT || this.type == Type.DIRECTORY;
     }
 
     public boolean isFile()
     {
-        return false;
+        return this.type == Type.FILE;
     }
 
     public Component getComponent()
@@ -408,13 +401,20 @@ public class Path
         return this.components.get(this.components.size() - 1);
     }
 
-    public Path getParent()
+    public ArrayList<Path> getSubPaths()
     {
-        return this.parent;
+        ArrayList<Component> components = this.getComponents();
+        ArrayList<Path> subPaths = new ArrayList<>();
+        subPaths.add(new Path(components.get(0).toString()));
+        for (int i = 1 ; i < (components.size()); i++)
+        {
+            subPaths.add(new Path(subPaths.get(i - 1), components.get(i).toString()));
+        }
+        return subPaths;
     }
 
-    public Type getType()
+    public void setType(Type type)
     {
-        return this.getComponent().type;
+        this.type = type;
     }
 }

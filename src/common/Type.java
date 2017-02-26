@@ -8,6 +8,7 @@ import java.io.Serializable;
 public enum Type
     implements Serializable
 {
-    CHILD,
     ROOT,
+    FILE,
+    DIRECTORY,
 }

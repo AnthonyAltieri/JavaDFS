@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -100,7 +101,7 @@ public class SkeletonService<T> {
     }
 
 
-    public static synchronized int findAvailablePort()
+    public static synchronized int findAvailablePort(InetAddress address)
     {
         int STARTING_PORT = 49152;
         int ENDING_PORT = 65535;
@@ -110,7 +111,7 @@ public class SkeletonService<T> {
         {
             try
             {
-                ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(port, 0, address);
                 if (serverSocket != null)
                 {
                     serverSocket.close();
