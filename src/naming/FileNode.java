@@ -2,6 +2,7 @@ package naming;
 
 import common.Component;
 import common.Path;
+import common.Type;
 import storage.Command;
 import storage.Storage;
 
@@ -18,13 +19,15 @@ public class FileNode
     Storage storage;
     Command command;
     FileNode parent;
+    Type type;
     Hashtable<Path, FileNode> children = new Hashtable<>();
 
-    FileNode(Path path, Storage storage, Command command)
+    FileNode(Path path, Storage storage, Command command, Type type)
     {
         this.path = path;
         this.storage = storage;
         this.command = command;
+        this.type = type;
     }
 
     public Path getPath()
@@ -54,11 +57,16 @@ public class FileNode
 
     public boolean isDirectory()
     {
-        return this.path.isDirectory();
+        return this.type == Type.DIRECTORY || this.type == Type.ROOT;
     }
 
     public boolean isFile()
     {
-        return this.path.isFile();
+        return this.type == Type.FILE;
+    }
+
+    public String toString()
+    {
+        return "[FileNode] " + path + "\nCommand: " + this.command + "\nStorage: " + this.storage;
     }
 }

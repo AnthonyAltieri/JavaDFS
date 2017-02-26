@@ -102,8 +102,6 @@ public class RemoteInvocationHandler<T>
         }
         catch (IOException e)
         {
-            e.printStackTrace();
-            System.err.print(shuttle);
             throw new RMIException("stream problem", e.getCause());
         }
         catch (ClassNotFoundException e)

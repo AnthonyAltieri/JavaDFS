@@ -195,21 +195,34 @@ public class NamingServer
     }
 
     private boolean create(Path path, boolean isFile)
-        throws RMIException, FileNotFoundException {
-        if (!this.fileSystem.hasPath(path))
-            throw new FileNotFoundException("path does not exist");
-        if (path.isDirectory() && isFile)
+        throws RMIException, FileNotFoundException, IllegalStateException
+    {
+        if (!path.toString().equals("/") && !this.fileSystem.hasPath(path.parent()))
+            throw new FileNotFoundException("path's parent does not exist");
+        if (!this.isAnyStorageConnected())
+            throw new IllegalStateException("no storage connected");
+        if (this.fileSystem.hasPath(path))
             return false;
         try
         {
-            this.fileSystem.getNode(path).getCommand().create(path);
+            Command command = this.fileSystem.get(path.parent()).getCommand();
+            if (command == null)
+            {
+                command = this.fileSystem.findAvailableCommand();
+            }
+            if (isFile)
+                command.create(path);
+            this.fileSystem.add(path, (isFile ? Type.FILE : Type.DIRECTORY));
             return true;
+        }
+        catch (IllegalStateException e)
+        {
+            throw e;
         }
         catch (IOException e)
         {
-            return false;
+            throw new RMIException(e.getMessage(), e.getCause());
         }
-
     }
 
     @Override
@@ -228,7 +241,7 @@ public class NamingServer
     {
         if (!this.fileSystem.hasPath(file))
             throw new FileNotFoundException("path does not exist");
-        return this.fileSystem.getNode(file).getStorage();
+        return this.fileSystem.get(file).getStorage();
     }
 
     // The method register is documented in Registration.java.
@@ -261,29 +274,7 @@ public class NamingServer
                 }
                 else
                 {
-//                    ArrayList<Path> subPaths = path.getSubPaths();
-//                    // Ignore the root
-//                    System.err.println("path: " + path);
-//                    for (int i = 1 ; i < subPaths.size() ; i++)
-//                    {
-//                        Path p = subPaths.get(i);
-//                        System.err.println("subpath: " + p);
-//                        if (!this.fileSystem.hasPath(p))
-//                        {
-//                            Type pathType = (i == subPaths.size() - 1)
-//                                ? Type.FILE
-//                                : Type.DIRECTORY;
-//                            p.setType(pathType);
-//                            String typeString = (pathType == Type.FILE) ? "FILE" : "DIRECTORY";
-//                            System.err.println("adding [" + typeString + "]: " + p);
-//                            this.fileSystem.add(p, client_stub, command_stub);
-//                        }
-//                        else
-//                        {
-//                            System.err.println("HAS PATH: " + p);
-//                        }
-//                    }
-                    this.fileSystem.add(path, client_stub, command_stub);
+                    this.fileSystem.register(path, client_stub, command_stub);
                 }
             }
             catch (FileNotFoundException e)
@@ -296,4 +287,9 @@ public class NamingServer
         }
         return duplicatePaths.toArray(new Path[duplicatePaths.size()]);
     }
+    private boolean isAnyStorageConnected()
+    {
+        return this.fileSystem.getRoot().getChildren().size() > 0;
+    }
+
 }

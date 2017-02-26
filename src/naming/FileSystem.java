@@ -7,6 +7,7 @@ import common.Type;
 import storage.Command;
 import storage.Storage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.*;
@@ -26,28 +27,48 @@ public class FileSystem
 
     FileSystem()
     {
-        this.root = new FileNode(new Path("/"), null, null);
+        this.root = new FileNode(new Path("/"), null, null, Type.ROOT);
     }
 
-    public void add(Path path, Storage storage, Command command)
+    public FileNode get(Path path)
         throws FileNotFoundException
     {
-        FileNode parent = getNode(path.parent());
-        parent.getChildren().put(path, new FileNode(path, storage, command));
+        FileNode focus = this.root;
+        ArrayList<Path> subPaths = path.getSubPaths();
+        // Remove the root path
+        subPaths.remove(0);
+        while (!subPaths.isEmpty())
+        {
+            Path p = subPaths.remove(0);
+            FileNode next = focus.getChildren().get(p);
+            if (next == null)
+                throw new FileNotFoundException("path not found");
+            focus = next;
+        }
+        return focus;
     }
 
     public boolean remove(Path path)
         throws FileNotFoundException
     {
-        FileNode parent = getNode(path.parent());
+        FileNode parent = this.get(path.parent());
         return (parent.getChildren().remove(path) != null);
     }
 
+    public void add(Path path, Type type)
+        throws FileNotFoundException
+    {
+        FileNode parent = this.get(path.parent());
+        FileNode toAdd = new FileNode(path, parent.getStorage(), parent.getCommand(), type);
+        parent.getChildren().put(path, toAdd);
+    }
 
-    public FileNode getNode(Path path)
+
+    public void register(Path path, Storage storage, Command command)
         throws FileNotFoundException
     {
         ArrayList<Path> subPaths = path.getSubPaths();
+        // Remove the root
         subPaths.remove(0);
         FileNode focus = this.root;
         while (!subPaths.isEmpty())
@@ -56,32 +77,24 @@ public class FileSystem
             FileNode next = focus.getChildren().get(currentPath);
             if (next == null)
             {
-                if (subPaths.isEmpty())
-                {
-                    throw new FileNotFoundException("no file for path");
-                }
-                FileNode newNode = new FileNode(
-                    currentPath,
-                    focus.getStorage(),
-                    focus.getCommand()
-                );
+                Type nodeType = (subPaths.isEmpty()) ? Type.FILE : Type.DIRECTORY;
+                FileNode newNode = new FileNode(currentPath, storage, command, nodeType);
                 focus.getChildren().put(currentPath,newNode);
                 focus = newNode;
                 continue;
             }
             focus = next;
         }
-        return focus;
     }
 
     public String[] getChildrenStrings(Path path)
         throws FileNotFoundException
     {
-        FileNode node = getNode(path);
+        FileNode node = this.get(path);
         if (!this.isDirectory(path))
             throw new FileNotFoundException("path is not to a directory");
         ArrayList<String> children = new ArrayList<>();
-        Arrays.asList(getNode(path).getChildren().keySet().toArray())
+        Arrays.asList(this.get(path).getChildren().keySet().toArray())
             .stream()
             .forEach(key -> {
                 children.add(((Path) key).getComponent().toString());
@@ -92,13 +105,13 @@ public class FileSystem
     public Storage getStorage(Path file)
         throws FileNotFoundException
     {
-        return getNode(file).getStorage();
+        return this.get(file).getStorage();
     }
 
     public boolean hasPath(Path path)
     {
         try {
-            FileNode parent = getNode(path);
+            FileNode parent = this.get(path);
             return true;
         } catch (FileNotFoundException e)
         {
@@ -138,22 +151,47 @@ public class FileSystem
     boolean isDirectory(Path path)
         throws FileNotFoundException
     {
-        return this.getFileType(path) == Type.DIRECTORY;
+        return get(path).isDirectory();
     }
 
     boolean isFile(Path path)
         throws FileNotFoundException
     {
-        return this.getFileType(path) == Type.FILE;
+        return get(path).isFile();
     }
 
-    Type getFileType(Path path)
-        throws FileNotFoundException
+    void setRoot(Storage storage, Command command)
     {
-        FileNode node = getNode(path);
-        Hashtable<Path, FileNode> children = node.getChildren();
-        if (children.size() > 0)
-            return Type.DIRECTORY;
-        return Type.FILE;
+        FileNode root = new FileNode(new Path("/"), storage, command, Type.ROOT);
+        this.root = root;
     }
+
+    FileNode getRoot()
+    {
+        return this.root;
+    }
+
+    Command findAvailableCommand()
+    {
+        // TODO: maybe do this intelligently
+        return findCommand(this.root);
+    }
+
+    private Command findCommand(FileNode node)
+    {
+        if (node.getCommand() != null)
+            return node.getCommand();
+        if (node.isFile())
+            return null;
+        Set<Path> keys = node.getChildren().keySet();
+        for (Path key : keys)
+        {
+            FileNode child = node.getChildren().get(key);
+            Command result = this.findCommand(child);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
+
 }
