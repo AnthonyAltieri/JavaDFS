@@ -1,4 +1,4 @@
-package conformance.naming;
+package conformance2.naming;
 
 import java.io.*;
 
@@ -85,7 +85,6 @@ public class CreationTest extends NamingTest
         // Attempt to create the file.
         try
         {
-            System.err.println("\n{CREATING DESIRED FILE} " + file + "\n");
             result = service_stub.createFile(file);
         }
         catch(Throwable t)
@@ -449,7 +448,7 @@ public class CreationTest extends NamingTest
         is expected, or the call is received with the wrong argument, the server
         fails the test.
      */
-    private class CreationTestStorageServer extends TestStorageServer
+    public class CreationTestStorageServer extends TestStorageServer
     {
         /** Creates the test storage server. */
         CreationTestStorageServer()
