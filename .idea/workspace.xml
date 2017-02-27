@@ -3,18 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ba3296c8-7bc8-4bfb-9c7b-1f6918c87df2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/conformance/ConformanceTests.class" afterPath="$PROJECT_DIR$/production/conformance/ConformanceTests.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/conformance/naming/CreationTest$CreationTestStorageServer.class" afterPath="$PROJECT_DIR$/production/conformance/naming/CreationTest$CreationTestStorageServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/FileNode.class" afterPath="$PROJECT_DIR$/production/naming/FileNode.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/FileSystem.class" afterPath="$PROJECT_DIR$/production/naming/FileSystem.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/naming/NamingServer.class" afterPath="$PROJECT_DIR$/production/naming/NamingServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/rmi/RemoteInvocationHandler.class" afterPath="$PROJECT_DIR$/production/rmi/RemoteInvocationHandler.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance/ConformanceTests.java" afterPath="$PROJECT_DIR$/src/conformance/ConformanceTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance/naming/CreationTest.java" afterPath="$PROJECT_DIR$/src/conformance/naming/CreationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/FileNode.java" afterPath="$PROJECT_DIR$/src/naming/FileNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/FileSystem.java" afterPath="$PROJECT_DIR$/src/naming/FileSystem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/NamingServer.java" afterPath="$PROJECT_DIR$/src/naming/NamingServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" afterPath="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" />
     </list>
     <ignored path="javaDFS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,31 +34,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.45310667">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="RegistrationTest.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/conformance/storage/RegistrationTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="55" column="38" selection-start-line="55" selection-start-column="38" selection-end-line="55" selection-end-column="38" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="RegistrationTest.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/conformance/naming/RegistrationTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="Path.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/common/Path.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+                  <caret line="239" column="21" selection-start-line="239" selection-start-column="21" selection-end-line="239" selection-end-column="21" />
                   <folding>
                     <element signature="e#7950#7951#0" expanded="true" />
                     <element signature="e#7995#7996#0" expanded="true" />
@@ -81,25 +53,15 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="NamingServer.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="NamingServer.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.85250735">
+                  <caret line="244" column="71" selection-start-line="244" selection-start-column="71" selection-end-line="244" selection-end-column="71" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#8603#8609#0" expanded="true" />
+                    <element signature="e#8754#8760#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="RemoteInvocationHandler.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8495575">
-                  <caret line="106" column="39" selection-start-line="106" selection-start-column="39" selection-end-line="106" selection-end-column="39" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -130,25 +92,15 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ConformanceTests.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="48" column="38" selection-start-line="48" selection-start-column="38" selection-end-line="48" selection-end-column="38" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Service.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Service.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/naming/Service.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="175" column="34" selection-start-line="175" selection-start-column="34" selection-end-line="175" selection-end-column="34" />
+                <state vertical-scroll-proportion="0.70501477">
+                  <caret line="229" column="19" selection-start-line="229" selection-start-column="19" selection-end-line="229" selection-end-column="19" />
                   <folding />
                 </state>
               </provider>
@@ -172,11 +124,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="CreationTest.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/conformance/naming/CreationTest.java">
+          <file leaf-file-name="StubRetrievalTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/conformance/naming/StubRetrievalTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.9306785">
-                  <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -255,13 +207,13 @@
         <option value="$PROJECT_DIR$/src/common/Type.java" />
         <option value="$PROJECT_DIR$/src/common/Path.java" />
         <option value="$PROJECT_DIR$/src/conformance/naming/TestStorageServer.java" />
-        <option value="$PROJECT_DIR$/src/conformance/ConformanceTests.java" />
         <option value="$PROJECT_DIR$/src/naming/FileNode.java" />
         <option value="$PROJECT_DIR$/src/storage/StorageServer.java" />
         <option value="$PROJECT_DIR$/src/naming/FileSystem.java" />
         <option value="$PROJECT_DIR$/src/conformance/naming/CreationTest.java" />
-        <option value="$PROJECT_DIR$/src/naming/NamingServer.java" />
         <option value="$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java" />
+        <option value="$PROJECT_DIR$/src/conformance/ConformanceTests.java" />
+        <option value="$PROJECT_DIR$/src/naming/NamingServer.java" />
       </list>
     </option>
   </component>
@@ -814,12 +766,12 @@
       <updated>1487917600048</updated>
       <workItem from="1487917601831" duration="11074000" />
       <workItem from="1487967865076" duration="234000" />
-      <workItem from="1487968260414" duration="71842000" />
+      <workItem from="1487968260414" duration="72953000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83150000" />
+    <option name="totallyTimeSpent" value="84261000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1920" y="-35" width="1920" height="1053" extended-state="6" />
@@ -873,13 +825,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/apps/Remove.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="22" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/apps/MakeDirectory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1198,14 +1143,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="38" selection-start-line="48" selection-start-column="38" selection-end-line="48" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/naming/FileNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1222,23 +1159,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/common/Path.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#7950#7951#0" expanded="true" />
-            <element signature="e#7995#7996#0" expanded="true" />
-            <element signature="e#13560#13561#0" expanded="true" />
-            <element signature="e#13636#13637#0" expanded="true" />
-            <element signature="e#13671#13672#0" expanded="true" />
-            <element signature="e#13716#13717#0" expanded="true" />
-            <element signature="e#14346#14347#0" expanded="true" />
-            <element signature="e#14378#14379#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/storage/StorageServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1247,30 +1167,6 @@
             <element signature="imports" expanded="true" />
             <element signature="e#9637#9643#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance/storage/RegistrationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="38" selection-start-line="55" selection-start-column="38" selection-end-line="55" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance/naming/RegistrationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/Service.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="175" column="34" selection-start-line="175" selection-start-column="34" selection-end-line="175" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1298,20 +1194,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/conformance/naming/CreationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.9306785">
+        <state vertical-scroll-proportion="0.0">
           <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8603#8609#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1325,9 +1210,77 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rmi/RemoteInvocationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8495575">
-          <caret line="106" column="39" selection-start-line="106" selection-start-column="39" selection-end-line="106" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="37" selection-start-line="85" selection-start-column="37" selection-end-line="85" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/ConformanceTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="14" selection-start-line="49" selection-start-column="14" selection-end-line="49" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/naming/RegistrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6283186">
+          <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/storage/RegistrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5132743">
+          <caret line="55" column="38" selection-start-line="55" selection-start-column="38" selection-end-line="55" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/Path.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="239" column="21" selection-start-line="239" selection-start-column="21" selection-end-line="239" selection-end-column="21" />
+          <folding>
+            <element signature="e#7950#7951#0" expanded="true" />
+            <element signature="e#7995#7996#0" expanded="true" />
+            <element signature="e#13560#13561#0" expanded="true" />
+            <element signature="e#13636#13637#0" expanded="true" />
+            <element signature="e#13671#13672#0" expanded="true" />
+            <element signature="e#13716#13717#0" expanded="true" />
+            <element signature="e#14346#14347#0" expanded="true" />
+            <element signature="e#14378#14379#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance/naming/StubRetrievalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/Service.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.70501477">
+          <caret line="229" column="19" selection-start-line="229" selection-start-column="19" selection-end-line="229" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.85250735">
+          <caret line="244" column="71" selection-start-line="244" selection-start-column="71" selection-end-line="244" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8754#8760#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

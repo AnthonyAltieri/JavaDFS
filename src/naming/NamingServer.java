@@ -239,8 +239,10 @@ public class NamingServer
     public Storage getStorage(Path file)
         throws FileNotFoundException
     {
-        if (!this.fileSystem.hasPath(file))
+        if (!this.fileSystem.hasPath(file) || file.toString().equals("/"))
             throw new FileNotFoundException("path does not exist");
+        if (this.fileSystem.isDirectory(file))
+            throw new FileNotFoundException("cannot pass in directory");
         return this.fileSystem.get(file).getStorage();
     }
 
