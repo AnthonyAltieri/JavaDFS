@@ -49,7 +49,7 @@ public class NamingServer
     Skeleton<Registration> registrationSkeleton;
     boolean isServiceSkeletonStarted;
     boolean isRegistrationSkeletonStarted;
-    Lock lock = new ReentrantLock();
+    Lock lock = new ReentrantLock(true);
 
     /** Creates the naming server object.
 

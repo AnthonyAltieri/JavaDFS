@@ -22,7 +22,7 @@ public class FileNode
     Type type;
     Status status = Status.OPEN;
     Hashtable<Path, FileNode> children = new Hashtable<>();
-    Lock lock = new ReentrantLock();
+    Lock lock = new ReentrantLock(true);
     Condition inUse = lock.newCondition();
     LinkedList<Status> lockRequests = new LinkedList<>();
     public Stack<Status> activeLocks = new Stack<>();

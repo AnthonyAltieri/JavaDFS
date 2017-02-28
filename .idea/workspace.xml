@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ba3296c8-7bc8-4bfb-9c7b-1f6918c87df2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance2/ConformanceTests.java" afterPath="$PROJECT_DIR$/src/conformance2/ConformanceTests.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conformance2/naming/LockTest.java" afterPath="$PROJECT_DIR$/src/conformance2/naming/LockTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/FileNode.java" afterPath="$PROJECT_DIR$/src/naming/FileNode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/FileSystem.java" afterPath="$PROJECT_DIR$/src/naming/FileSystem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/NamingServer.java" afterPath="$PROJECT_DIR$/src/naming/NamingServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/naming/Status.java" afterPath="$PROJECT_DIR$/src/naming/Status.java" />
     </list>
     <ignored path="javaDFS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -58,11 +56,11 @@
           <file leaf-file-name="NamingServer.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2256">
-                  <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.6256">
+                  <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#9698#9704#0" expanded="true" />
+                    <element signature="e#9702#9708#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -72,7 +70,7 @@
             <entry file="file://$PROJECT_DIR$/src/naming/FileSystem.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+                  <caret line="257" column="33" selection-start-line="257" selection-start-column="33" selection-end-line="257" selection-end-column="33" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#484#485#0" expanded="true" />
@@ -108,41 +106,41 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="FileNode.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="FileNode.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/naming/FileNode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="26" column="30" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
+                <state vertical-scroll-proportion="0.56">
+                  <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1900#1901#0" expanded="true" />
-                    <element signature="e#1932#1933#0" expanded="true" />
-                    <element signature="e#1964#1965#0" expanded="true" />
-                    <element signature="e#1998#1999#0" expanded="true" />
-                    <element signature="e#2037#2038#0" expanded="true" />
-                    <element signature="e#2070#2071#0" expanded="true" />
-                    <element signature="e#2113#2114#0" expanded="true" />
-                    <element signature="e#2150#2151#0" expanded="true" />
-                    <element signature="e#2192#2193#0" expanded="true" />
-                    <element signature="e#2229#2230#0" expanded="true" />
-                    <element signature="e#2268#2269#0" expanded="true" />
-                    <element signature="e#2307#2308#0" expanded="true" />
-                    <element signature="e#2349#2350#0" expanded="true" />
-                    <element signature="e#2389#2390#0" expanded="true" />
-                    <element signature="e#2434#2435#0" expanded="true" />
-                    <element signature="e#2474#2475#0" expanded="true" />
-                    <element signature="e#3136#3137#0" expanded="true" />
-                    <element signature="e#3181#3182#0" expanded="true" />
-                    <element signature="e#3226#3227#0" expanded="true" />
-                    <element signature="e#3275#3276#0" expanded="true" />
-                    <element signature="e#3320#3321#0" expanded="true" />
-                    <element signature="e#3374#3375#0" expanded="true" />
-                    <element signature="e#3418#3419#0" expanded="true" />
-                    <element signature="e#3469#3470#0" expanded="true" />
-                    <element signature="e#3512#3513#0" expanded="true" />
-                    <element signature="e#3561#3562#0" expanded="true" />
-                    <element signature="e#3603#3604#0" expanded="true" />
-                    <element signature="e#3641#3642#0" expanded="true" />
+                    <element signature="e#1904#1905#0" expanded="true" />
+                    <element signature="e#1936#1937#0" expanded="true" />
+                    <element signature="e#1968#1969#0" expanded="true" />
+                    <element signature="e#2002#2003#0" expanded="true" />
+                    <element signature="e#2041#2042#0" expanded="true" />
+                    <element signature="e#2074#2075#0" expanded="true" />
+                    <element signature="e#2117#2118#0" expanded="true" />
+                    <element signature="e#2154#2155#0" expanded="true" />
+                    <element signature="e#2196#2197#0" expanded="true" />
+                    <element signature="e#2233#2234#0" expanded="true" />
+                    <element signature="e#2272#2273#0" expanded="true" />
+                    <element signature="e#2311#2312#0" expanded="true" />
+                    <element signature="e#2353#2354#0" expanded="true" />
+                    <element signature="e#2393#2394#0" expanded="true" />
+                    <element signature="e#2438#2439#0" expanded="true" />
+                    <element signature="e#2478#2479#0" expanded="true" />
+                    <element signature="e#3140#3141#0" expanded="true" />
+                    <element signature="e#3185#3186#0" expanded="true" />
+                    <element signature="e#3230#3231#0" expanded="true" />
+                    <element signature="e#3279#3280#0" expanded="true" />
+                    <element signature="e#3324#3325#0" expanded="true" />
+                    <element signature="e#3378#3379#0" expanded="true" />
+                    <element signature="e#3422#3423#0" expanded="true" />
+                    <element signature="e#3473#3474#0" expanded="true" />
+                    <element signature="e#3516#3517#0" expanded="true" />
+                    <element signature="e#3565#3566#0" expanded="true" />
+                    <element signature="e#3607#3608#0" expanded="true" />
+                    <element signature="e#3645#3646#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -152,18 +150,20 @@
             <entry file="file://$PROJECT_DIR$/src/conformance2/ConformanceTests.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="67" column="41" selection-start-line="67" selection-start-column="41" selection-end-line="67" selection-end-column="41" />
+                  <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="LockTest.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/conformance2/naming/LockTest.java">
+          <file leaf-file-name="QueueTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/conformance2/naming/QueueTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="2.1808">
-                  <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
-                  <folding />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="220" column="0" selection-start-line="220" selection-start-column="0" selection-end-line="220" selection-end-column="0" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -246,11 +246,11 @@
         <option value="$PROJECT_DIR$/src/conformance2/rmi/StubTest.java" />
         <option value="$PROJECT_DIR$/src/conformance2/naming/TestStorageServer.java" />
         <option value="$PROJECT_DIR$/src/naming/Status.java" />
-        <option value="$PROJECT_DIR$/src/conformance2/ConformanceTests.java" />
-        <option value="$PROJECT_DIR$/src/conformance2/naming/LockTest.java" />
         <option value="$PROJECT_DIR$/src/naming/LockRequest.java" />
-        <option value="$PROJECT_DIR$/src/naming/FileNode.java" />
+        <option value="$PROJECT_DIR$/src/conformance2/naming/LockTest.java" />
+        <option value="$PROJECT_DIR$/src/conformance2/ConformanceTests.java" />
         <option value="$PROJECT_DIR$/src/naming/FileSystem.java" />
+        <option value="$PROJECT_DIR$/src/naming/FileNode.java" />
         <option value="$PROJECT_DIR$/src/naming/NamingServer.java" />
       </list>
     </option>
@@ -802,12 +802,12 @@
       <updated>1487917600048</updated>
       <workItem from="1487917601831" duration="11074000" />
       <workItem from="1487967865076" duration="234000" />
-      <workItem from="1487968260414" duration="97055000" />
+      <workItem from="1487968260414" duration="98158000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108363000" />
+    <option name="totallyTimeSpent" value="109466000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1920" y="-35" width="1920" height="1053" extended-state="6" />
@@ -1178,14 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance2/naming/QueueTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18436578">
-          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/conformance2/naming/RegistrationTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1214,6 +1206,100 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/Status.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/Service.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="116" column="37" selection-start-line="116" selection-start-column="37" selection-end-line="116" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance2/naming/LockTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance2/ConformanceTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conformance2/naming/QueueTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="220" column="0" selection-start-line="220" selection-start-column="0" selection-end-line="220" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/FileSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="257" column="33" selection-start-line="257" selection-start-column="33" selection-end-line="257" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#484#485#0" expanded="true" />
+            <element signature="e#562#563#0" expanded="true" />
+            <element signature="e#4402#4403#0" expanded="true" />
+            <element signature="e#4434#4435#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naming/FileNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.56">
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1904#1905#0" expanded="true" />
+            <element signature="e#1936#1937#0" expanded="true" />
+            <element signature="e#1968#1969#0" expanded="true" />
+            <element signature="e#2002#2003#0" expanded="true" />
+            <element signature="e#2041#2042#0" expanded="true" />
+            <element signature="e#2074#2075#0" expanded="true" />
+            <element signature="e#2117#2118#0" expanded="true" />
+            <element signature="e#2154#2155#0" expanded="true" />
+            <element signature="e#2196#2197#0" expanded="true" />
+            <element signature="e#2233#2234#0" expanded="true" />
+            <element signature="e#2272#2273#0" expanded="true" />
+            <element signature="e#2311#2312#0" expanded="true" />
+            <element signature="e#2353#2354#0" expanded="true" />
+            <element signature="e#2393#2394#0" expanded="true" />
+            <element signature="e#2438#2439#0" expanded="true" />
+            <element signature="e#2478#2479#0" expanded="true" />
+            <element signature="e#3140#3141#0" expanded="true" />
+            <element signature="e#3185#3186#0" expanded="true" />
+            <element signature="e#3230#3231#0" expanded="true" />
+            <element signature="e#3279#3280#0" expanded="true" />
+            <element signature="e#3324#3325#0" expanded="true" />
+            <element signature="e#3378#3379#0" expanded="true" />
+            <element signature="e#3422#3423#0" expanded="true" />
+            <element signature="e#3473#3474#0" expanded="true" />
+            <element signature="e#3516#3517#0" expanded="true" />
+            <element signature="e#3565#3566#0" expanded="true" />
+            <element signature="e#3607#3608#0" expanded="true" />
+            <element signature="e#3645#3646#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/Path.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1231,98 +1317,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/Status.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance2/ConformanceTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="41" selection-start-line="67" selection-start-column="41" selection-end-line="67" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/Service.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="116" column="37" selection-start-line="116" selection-start-column="37" selection-end-line="116" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/FileSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#484#485#0" expanded="true" />
-            <element signature="e#562#563#0" expanded="true" />
-            <element signature="e#4402#4403#0" expanded="true" />
-            <element signature="e#4434#4435#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/naming/NamingServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2256">
-          <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6256">
+          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9698#9704#0" expanded="true" />
+            <element signature="e#9702#9708#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/naming/FileNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="30" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1900#1901#0" expanded="true" />
-            <element signature="e#1932#1933#0" expanded="true" />
-            <element signature="e#1964#1965#0" expanded="true" />
-            <element signature="e#1998#1999#0" expanded="true" />
-            <element signature="e#2037#2038#0" expanded="true" />
-            <element signature="e#2070#2071#0" expanded="true" />
-            <element signature="e#2113#2114#0" expanded="true" />
-            <element signature="e#2150#2151#0" expanded="true" />
-            <element signature="e#2192#2193#0" expanded="true" />
-            <element signature="e#2229#2230#0" expanded="true" />
-            <element signature="e#2268#2269#0" expanded="true" />
-            <element signature="e#2307#2308#0" expanded="true" />
-            <element signature="e#2349#2350#0" expanded="true" />
-            <element signature="e#2389#2390#0" expanded="true" />
-            <element signature="e#2434#2435#0" expanded="true" />
-            <element signature="e#2474#2475#0" expanded="true" />
-            <element signature="e#3136#3137#0" expanded="true" />
-            <element signature="e#3181#3182#0" expanded="true" />
-            <element signature="e#3226#3227#0" expanded="true" />
-            <element signature="e#3275#3276#0" expanded="true" />
-            <element signature="e#3320#3321#0" expanded="true" />
-            <element signature="e#3374#3375#0" expanded="true" />
-            <element signature="e#3418#3419#0" expanded="true" />
-            <element signature="e#3469#3470#0" expanded="true" />
-            <element signature="e#3512#3513#0" expanded="true" />
-            <element signature="e#3561#3562#0" expanded="true" />
-            <element signature="e#3603#3604#0" expanded="true" />
-            <element signature="e#3641#3642#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/conformance2/naming/LockTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.1808">
-          <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>

@@ -187,6 +187,7 @@ public class FileSystem
     public void lock(Path path, Status status)
         throws FileNotFoundException
     {
+        System.err.println("lock(" + path + ", " + status + ")");
         this.lockHelper(path, status, false);
     }
 
@@ -254,6 +255,7 @@ public class FileSystem
     public void unlock(Path path, Status status)
         throws FileNotFoundException
     {
+        System.err.println("unlock(" + path + ", " + status + ")");
         this.unlockHelper(path, status, false);
     }
 

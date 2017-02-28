@@ -85,18 +85,12 @@ public class LockTest extends NamingTest
     {
         testBadPaths();
 
-        helper(1);
         testSharing(root, false, root, false);
-        helper(2);
         testSharing(file1, true, file2, true);
-        helper(3);
         testSharing(file1, true, directory, false);
 
-        helper(4);
         testExclusion(root, false, root, true);
-        helper(5);
         testExclusion(root, true, root, false);
-        helper(6);
         testExclusion(root, true, root, true);
         testExclusion(root, true, directory, false);
         testExclusion(directory, false, root, true);
