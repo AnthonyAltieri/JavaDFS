@@ -1,15 +1,11 @@
 package naming;
 
-import common.Component;
-import common.DFSException;
 import common.Path;
 import common.Type;
 import storage.Command;
 import storage.Storage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -160,12 +156,6 @@ public class FileSystem
         return get(path).isFile();
     }
 
-    void setRoot(Storage storage, Command command)
-    {
-        FileNode root = new FileNode(new Path("/"), storage, command, Type.ROOT);
-        this.root = root;
-    }
-
     FileNode getRoot()
     {
         return this.root;
@@ -192,6 +182,143 @@ public class FileSystem
                 return result;
         }
         return null;
+    }
+
+    public void lock(Path path, Status status)
+        throws FileNotFoundException
+    {
+        this.lockHelper(path, status, false);
+    }
+
+    private void lockHelper(Path path, Status status, boolean isRipple)
+        throws FileNotFoundException
+    {
+        FileNode node = get(path);
+        node.lock();
+        if (status == Status.EXCLUSIVE)
+        {
+            try
+            {
+                // Wait until there are no locks on the node
+                while (node.getStatus() != Status.OPEN)
+                    node.getInUse().await();
+                node.addExclusiveLock();
+                node.setStatus(Status.EXCLUSIVE);
+
+                // Set all of the parent nodes to SHARED
+                if (!isRipple)
+                {
+                    ArrayList<Path> subPaths = path.getSubPaths();
+                    subPaths.remove(subPaths.size() - 1);
+                    for (int i = (subPaths.size() - 1) ; i >= 0 ; i--)
+                    {
+                        Path p = subPaths.get(i);
+                        this.lockHelper(p, Status.SHARED, true);
+                    }
+                    // Set all children nodes to EXCLUSIVE
+                    for (FileNode child : this.getChildren(node))
+                    {
+                        this.lockHelper(child.getPath(), Status.EXCLUSIVE, true);
+                    }
+
+                }
+                node.unlock();
+            }
+            catch (InterruptedException e)
+            {
+                node.unlock();
+                throw new IllegalStateException("lock interrupted");
+            }
+        }
+        else
+        {
+            try
+            {
+                // Wait until there are no Exclusive locks on the node
+                while (node.getStatus() == Status.EXCLUSIVE)
+                    node.getInUse().await();
+                node.addSharedLock();
+                node.setStatus(Status.SHARED);
+                node.unlock();
+            }
+            catch (InterruptedException e)
+            {
+                node.unlock();
+                throw new IllegalStateException("lock interrupted");
+            }
+        }
+
+    }
+
+
+    public void unlock(Path path, Status status)
+        throws FileNotFoundException
+    {
+        this.unlockHelper(path, status, false);
+    }
+
+    private void unlockHelper(Path path, Status status, boolean isRipple)
+        throws FileNotFoundException
+    {
+        FileNode node = this.get(path);
+        node.lock();
+        if (status == Status.EXCLUSIVE)
+        {
+            node.removeExclusiveLock();
+            node.setStatus(Status.OPEN);
+            node.getInUse().signal();
+            if (!isRipple)
+            {
+                ArrayList<Path> subPaths = path.getSubPaths();
+                subPaths.remove(subPaths.size() - 1);
+                // Set all of the parent nodes to SHARED
+                for (int i = (subPaths.size() - 1) ; i >= 0 ; i--)
+                {
+                    Path p = subPaths.get(i);
+                    this.unlockHelper(p, Status.SHARED, true);
+                }
+                // Set all children nodes to EXCLUSIVE
+                for (FileNode child : this.getChildren(node))
+                {
+                    this.unlockHelper(child.getPath(), Status.EXCLUSIVE, true);
+                }
+            }
+        }
+        else
+        {
+            node.removeSharedLock();
+            if (node.getSharedLocks() == 0)
+            {
+                node.setStatus(Status.OPEN);
+                node.getInUse().signal();
+            }
+        }
+        node.unlock();
+    }
+
+    private ArrayList<FileNode> getChildren(FileNode node)
+    {
+        ArrayList<FileNode> children = new ArrayList<>();
+        Queue<FileNode> nextNode = new LinkedList<>();
+        nextNode.add(node);
+        while (!nextNode.isEmpty())
+        {
+            FileNode next = nextNode.remove();
+            children.add(next);
+            for (FileNode child : next.getChildren().values())
+            {
+                nextNode.add(child);
+            }
+        }
+        // Remove node that you are getting children from
+        children.remove(0);
+        return children;
+    }
+
+    public Status getStatus(Path path)
+        throws FileNotFoundException
+    {
+        return this.get(path).getStatus();
     }
 
 }

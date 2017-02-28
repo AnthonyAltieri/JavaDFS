@@ -39,6 +39,19 @@ public class ConformanceTests
         @SuppressWarnings("unchecked")
         Class<? extends Test>[]     tests =
             new Class[] {
+                conformance.common.PathTest.class,
+                conformance.rmi.SkeletonTest.class,
+                conformance.rmi.StubTest.class,
+                conformance.rmi.ConnectionTest.class,
+                conformance.rmi.ThreadTest.class,
+                conformance.storage.RegistrationTest.class,
+                conformance.storage.AccessTest.class,
+                conformance.storage.DirectoryTest.class,
+                conformance.naming.ContactTest.class,
+                conformance.naming.RegistrationTest.class,
+                conformance.naming.ListingTest.class,
+                conformance.naming.CreationTest.class,
+                conformance.naming.StubRetrievalTest.class,
                 conformance2.common.PathTest.class,
                  conformance2.rmi.SkeletonTest.class,
                  conformance2.rmi.StubTest.class,
@@ -47,16 +60,16 @@ public class ConformanceTests
                  conformance2.storage.RegistrationTest.class,
                  conformance2.storage.AccessTest.class,
                  conformance2.storage.DirectoryTest.class,
-                 conformance2.storage.ReplicationTest.class,
                  conformance2.naming.ContactTest.class,
                  conformance2.naming.RegistrationTest.class,
                  conformance2.naming.ListingTest.class,
                  conformance2.naming.CreationTest.class,
                  conformance2.naming.StubRetrievalTest.class,
                  conformance2.naming.LockTest.class,
-                 conformance2.naming.QueueTest.class,
-                 conformance2.naming.ReplicationTest.class,
-                 conformance2.naming.DeletionTest.class
+//                 conformance2.naming.QueueTest.class,
+//                conformance2.storage.ReplicationTest.class,
+//                 conformance2.naming.ReplicationTest.class,
+//                 conformance2.naming.DeletionTest.class
             };
         Series                      series = new Series(tests);
         SeriesReport                report = series.run(3, System.out);

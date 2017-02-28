@@ -5,6 +5,8 @@ import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import rmi.*;
 import common.*;
@@ -47,6 +49,7 @@ public class NamingServer
     Skeleton<Registration> registrationSkeleton;
     boolean isServiceSkeletonStarted;
     boolean isRegistrationSkeletonStarted;
+    Lock lock = new ReentrantLock();
 
     /** Creates the naming server object.
 
@@ -152,15 +155,40 @@ public class NamingServer
 
     // The following public methods are documented in Service.java.
     @Override
-    public void lock(Path path, boolean exclusive) throws FileNotFoundException
+    public void lock(Path path, boolean exclusive)
+        throws FileNotFoundException
     {
-        throw new UnsupportedOperationException("not implemented");
+        Status status = exclusive ? Status.EXCLUSIVE : Status.SHARED;
+        if (path == null)
+        {
+            throw new NullPointerException("path is null");
+        }
+        if (!this.fileSystem.hasPath(path))
+        {
+            throw new FileNotFoundException("path not found for lock");
+        }
+        if (exclusive) this.lock.lock();
+        this.fileSystem.lock(path, status);
+        if (exclusive) this.lock.unlock();
     }
 
     @Override
     public void unlock(Path path, boolean exclusive)
+        throws RMIException
     {
-        throw new UnsupportedOperationException("not implemented");
+        Status status = exclusive ? Status.EXCLUSIVE : Status.SHARED;
+        if (path == null)
+            throw new NullPointerException("path is null");
+        if (!this.fileSystem.hasPath(path))
+            throw new IllegalArgumentException("cannot find path");
+        try
+        {
+            this.fileSystem.unlock(path, status);
+        }
+        catch (FileNotFoundException e)
+        {
+            throw new IllegalArgumentException("cannot find path");
+        }
     }
 
     @Override
