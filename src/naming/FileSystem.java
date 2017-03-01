@@ -2,10 +2,12 @@ package naming;
 
 import common.Path;
 import common.Type;
+import rmi.RMIException;
 import storage.Command;
 import storage.Storage;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -20,6 +22,7 @@ import java.util.*;
 public class FileSystem
 {
     FileNode root;
+    ArrayList<StorageContainer> emptyServers = new ArrayList<>();
 
     FileSystem()
     {
@@ -161,34 +164,42 @@ public class FileSystem
         return this.root;
     }
 
-    Command findAvailableCommand()
+    boolean attemptReplicate(Path path, ArrayList<StorageContainer> alreadyIn)
+        throws RMIException
     {
-        // TODO: maybe do this intelligently
-        return findCommand(this.root);
+        StorageContainer storageContainer = findAvailableStorageContainer(alreadyIn);
+        if (storageContainer == null) return false;
+        try
+        {
+            boolean result = storageContainer.getCommand().copy(path, alreadyIn.get(0).getStorage());
+            if (result)
+            {
+                this.get(path).getStorageContainers().add(storageContainer);
+            }
+            return result;
+        }
+        catch (IOException e)
+        {
+            throw new RMIException(e.getMessage(), e.getCause());
+        }
     }
 
-    private Command findCommand(FileNode node)
+    StorageContainer findAvailableStorageContainer(ArrayList<StorageContainer> alreadyIn)
     {
-        if (node.getCommand() != null)
-            return node.getCommand();
-        if (node.isFile())
-            return null;
-        Set<Path> keys = node.getChildren().keySet();
-        for (Path key : keys)
-        {
-            FileNode child = node.getChildren().get(key);
-            Command result = this.findCommand(child);
-            if (result != null)
-                return result;
-        }
-        return null;
+        if (this.emptyServers.size() > 0) return this.emptyServers.remove(0);
+        Set<StorageContainer> alreadyInSet = alreadyIn == null
+            ? new HashSet<>()
+            : new HashSet<>(alreadyIn);
+        return findStorageContainer(this.root, alreadyInSet);
     }
+
+
 
     public void lock(Path path, Status status)
         throws FileNotFoundException
     {
-        System.err.println("lock(" + path + ", " + status + ")");
         this.lockHelper(path, status, false);
+        FileNode node = this.get(path);
     }
 
     private void lockHelper(Path path, Status status, boolean isRipple)
@@ -202,7 +213,11 @@ public class FileSystem
             {
                 // Wait until there are no locks on the node
                 while (node.getStatus() != Status.OPEN)
+                {
+                    node.waitQueue.add(Status.EXCLUSIVE);
                     node.getInUse().await();
+                    node.removeWaitQueue();
+                }
                 node.addExclusiveLock();
                 node.setStatus(Status.EXCLUSIVE);
 
@@ -236,8 +251,14 @@ public class FileSystem
             try
             {
                 // Wait until there are no Exclusive locks on the node
-                while (node.getStatus() == Status.EXCLUSIVE)
+                while (node.getStatus() == Status.EXCLUSIVE || node.peekWaitQueue() == Status.EXCLUSIVE)
+                {
+                    node.addWaitQueue(Status.SHARED);
                     node.getInUse().await();
+                    node.removeWaitQueue();
+                    if (node.peekWaitQueue() == Status.SHARED)
+                        node.getInUse().signal();
+                }
                 node.addSharedLock();
                 node.setStatus(Status.SHARED);
                 node.unlock();
@@ -255,7 +276,6 @@ public class FileSystem
     public void unlock(Path path, Status status)
         throws FileNotFoundException
     {
-        System.err.println("unlock(" + path + ", " + status + ")");
         this.unlockHelper(path, status, false);
     }
 
@@ -298,6 +318,25 @@ public class FileSystem
         node.unlock();
     }
 
+    public ArrayList<StorageContainer> consolidateWriteData(Path path)
+        throws FileNotFoundException, RMIException
+    {
+        FileNode node = this.get(path);
+        ArrayList<StorageContainer> storageContainers = node.getStorageContainers();
+        ArrayList<StorageContainer> invalidStorageContainers = null;
+        if (storageContainers.size() > 1)
+        {
+            invalidStorageContainers = new ArrayList<>();
+            for (int i = 0 ; i < storageContainers.size() - 1 ; i++)
+            {
+                StorageContainer invalid = storageContainers.remove(i);
+                invalid.getCommand().delete(path);
+                invalidStorageContainers.add(invalid);
+            }
+        }
+        return invalidStorageContainers;
+    }
+
     private ArrayList<FileNode> getChildren(FileNode node)
     {
         ArrayList<FileNode> children = new ArrayList<>();
@@ -321,6 +360,55 @@ public class FileSystem
         throws FileNotFoundException
     {
         return this.get(path).getStatus();
+    }
+
+    public boolean hasStorageConnected()
+    {
+        if (this.root == null) return false;
+        return (this.findStorageContainer(this.root, null) != null);
+    }
+
+    public int getNumberStorageContainers()
+    {
+        Set<StorageContainer> alreadyIn = new HashSet<>();
+        while (true)
+        {
+            StorageContainer found = findStorageContainer(this.root, alreadyIn);
+            if (found == null) break;
+            alreadyIn.add(found);
+        }
+        return alreadyIn.size() + this.emptyServers.size();
+    }
+
+    private StorageContainer findStorageContainer(FileNode node, Set<StorageContainer> alreadyIn)
+    {
+        boolean result;
+        Stack<FileNode> children = new Stack<>();
+        children.push(node);
+        while (children.size() > 0)
+        {
+            FileNode popped = children.pop();
+            ArrayList<StorageContainer> storageContainers = popped.getStorageContainers();
+            for (StorageContainer sc : storageContainers)
+            {
+                 if (sc.getCommand() != null)
+                 {
+                     if(alreadyIn == null)
+                     {
+                         return sc;
+                     }
+                     else if(!alreadyIn.contains(sc))
+                     {
+                         return sc;
+                     }
+                 }
+            }
+            for (FileNode child : popped.getChildren().values())
+            {
+                children.push(child);
+            }
+        }
+        return null;
     }
 
 }

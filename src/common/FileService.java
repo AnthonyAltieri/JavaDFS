@@ -3,6 +3,7 @@ package common;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -71,6 +72,10 @@ public class FileService
         return true;
     }
 
+    public static File copyFile(File file, byte[] data)
+    {
+        return new File("");
+    }
     public static File getFile(String path)
     {
         return new File(path);
@@ -127,6 +132,13 @@ public class FileService
         {
             file.delete();
         }
+    }
+
+    public static byte[] readFile (String localPath)
+        throws IOException
+    {
+        return Files.readAllBytes(new File(localPath).toPath());
+
     }
 
 }

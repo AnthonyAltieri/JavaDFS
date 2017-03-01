@@ -1,10 +1,8 @@
 package naming;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
-import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -156,7 +154,7 @@ public class NamingServer
     // The following public methods are documented in Service.java.
     @Override
     public void lock(Path path, boolean exclusive)
-        throws FileNotFoundException
+        throws FileNotFoundException, RMIException
     {
         Status status = exclusive ? Status.EXCLUSIVE : Status.SHARED;
         if (path == null)
@@ -168,6 +166,18 @@ public class NamingServer
             throw new FileNotFoundException("path not found for lock");
         }
         if (exclusive) this.lock.lock();
+        if (!exclusive)
+        {
+            ArrayList<StorageContainer> storageContainers = this.fileSystem.get(path).shouldReplicate();
+            if (storageContainers != null)
+            {
+                this.fileSystem.attemptReplicate(path, storageContainers);
+            }
+        }
+        else
+        {
+            this.fileSystem.consolidateWriteData(path);
+        }
         this.fileSystem.lock(path, status);
         if (exclusive) this.lock.unlock();
     }
@@ -227,7 +237,7 @@ public class NamingServer
     {
         if (!path.toString().equals("/") && !this.fileSystem.hasPath(path.parent()))
             throw new FileNotFoundException("path's parent does not exist");
-        if (!this.isAnyStorageConnected())
+        if (!this.fileSystem.hasStorageConnected())
             throw new IllegalStateException("no storage connected");
         if (this.fileSystem.hasPath(path))
             return false;
@@ -236,7 +246,7 @@ public class NamingServer
             Command command = this.fileSystem.get(path.parent()).getCommand();
             if (command == null)
             {
-                command = this.fileSystem.findAvailableCommand();
+                command = this.fileSystem.findAvailableStorageContainer(null).getCommand();
             }
             if (isFile)
                 command.create(path);
@@ -255,11 +265,33 @@ public class NamingServer
 
     @Override
     public boolean delete(Path path)
-        throws FileNotFoundException
+        throws FileNotFoundException, RMIException
     {
         if (!this.fileSystem.hasPath(path))
             throw new FileNotFoundException("path does not exist");
-        return this.fileSystem.remove(path);
+        this.lock.lock();
+        try
+        {
+            boolean result = false;
+            for (StorageContainer sc : this.fileSystem.get(path).getStorageContainers())
+            {
+                result = sc.getCommand().delete(path);
+                if (!result) return false;
+            }
+            result = result || this.fileSystem.remove(path);
+            lock.unlock();
+            return result;
+        }
+        catch (FileNotFoundException e)
+        {
+            lock.unlock();
+            throw e;
+        }
+        catch (RMIException e)
+        {
+            lock.unlock();
+            throw e;
+        }
     }
 
 
@@ -288,7 +320,17 @@ public class NamingServer
 
         if (this.registry.contains(client_stub))
             throw new IllegalStateException("storage server already registered");
+
+        System.err.println("register(" + client_stub + ") files.length: " + files.length);
+
         this.registry.add(client_stub);
+
+        if (files.length == 0)
+        {
+            System.err.println("adding empty server");
+            this.fileSystem.emptyServers.add(new StorageContainer(client_stub, command_stub));
+            return new Path[0];
+        }
 
         HashSet<Path> allPaths = new HashSet<>();
         ArrayList<Path> duplicatePaths = new ArrayList<Path>();
@@ -317,9 +359,16 @@ public class NamingServer
         }
         return duplicatePaths.toArray(new Path[duplicatePaths.size()]);
     }
-    private boolean isAnyStorageConnected()
+//    private boolean isAnyStorageConnected()
+//    {
+//        return this.fileSystem.getRoot().getChildren().size() > 0;
+//    }
+
+    public boolean hasStorageConnected()
     {
-        return this.fileSystem.getRoot().getChildren().size() > 0;
+        return this.fileSystem.hasStorageConnected();
+
     }
+
 
 }

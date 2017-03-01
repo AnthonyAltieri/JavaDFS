@@ -16,25 +16,26 @@ import java.util.concurrent.locks.ReentrantLock;
 public class FileNode
 {
     Path path;
-    Storage storage;
-    Command command;
+    ArrayList<StorageContainer> storageContainers = new ArrayList<>();
     FileNode parent;
     Type type;
     Status status = Status.OPEN;
     Hashtable<Path, FileNode> children = new Hashtable<>();
     Lock lock = new ReentrantLock(true);
     Condition inUse = lock.newCondition();
-    LinkedList<Status> lockRequests = new LinkedList<>();
+    Queue<Status> waitQueue = new LinkedList<>();
     public Stack<Status> activeLocks = new Stack<>();
     int sharedLocks = 0;
     int exclusiveLocks = 0;
+    int numberReads = 0;
+    long fileSize;
 
     FileNode(Path path, Storage storage, Command command, Type type)
     {
         this.path = path;
-        this.storage = storage;
-        this.command = command;
+        storageContainers.add(new StorageContainer(storage, command));
         this.type = type;
+        this.fileSize = fileSize;
     }
 
     public Path getPath()
@@ -42,14 +43,29 @@ public class FileNode
         return this.path;
     }
 
+    private StorageContainer getFirstStorageContainer()
+    {
+       return this.storageContainers.get(0);
+    }
+
+    public boolean hasStorageContainer()
+    {
+        return !this.storageContainers.isEmpty();
+    }
+
+    public ArrayList<StorageContainer> getStorageContainers()
+    {
+        return this.storageContainers;
+    }
+
     public Storage getStorage()
     {
-        return this.storage;
+        return getFirstStorageContainer().getStorage();
     }
 
     public Command getCommand()
     {
-        return this.command;
+        return getFirstStorageContainer().getCommand();
     }
 
     public Hashtable<Path, FileNode> getChildren()
@@ -79,11 +95,6 @@ public class FileNode
     public boolean isFile()
     {
         return this.type == Type.FILE;
-    }
-
-    public String toString()
-    {
-        return "[FileNode] " + path + "\nCommand: " + this.command + "\nStorage: " + this.storage;
     }
 
     public void lock()
@@ -128,22 +139,15 @@ public class FileNode
 
     public String getLockStatus()
     {
-        String string = "[";
-        for (Status status : this.lockRequests)
-        {
-            string += status;
-            string += ", ";
-        }
-        string += "]";
+        String string = "NumExclusive: " + this.exclusiveLocks + " | NumShared: " + this.sharedLocks;
         return string;
     }
 
-
-    public Status getNextLockRequest()
+    public Status peekWaitQueue()
     {
         try
         {
-            return this.lockRequests.peek();
+            return this.waitQueue.peek();
         }
         catch (NoSuchElementException e)
         {
@@ -151,20 +155,26 @@ public class FileNode
         }
     }
 
-    public Status getNextNextLock()
+    public void addWaitQueue(Status status)
     {
-        if (this.lockRequests.size() < 2) return null;
-        return this.lockRequests.get(1);
+        this.waitQueue.add(status);
     }
 
-    public void addLockRequest(Status status)
+    public void removeWaitQueue()
     {
-        this.lockRequests.add(status);
+        this.waitQueue.remove();
     }
 
-    public Status removeLockRequest()
+    public String waitQueueString()
     {
-        return this.lockRequests.remove();
+        String string = "[";
+        for (Status status : this.waitQueue)
+        {
+            string += status;
+            string += ", ";
+        }
+        string += "]";
+        return string;
     }
 
     public boolean hasExclusiveLock()
@@ -182,9 +192,17 @@ public class FileNode
         return this.status != Status.OPEN;
     }
 
-    public void removeActiveLock()
+    public ArrayList<StorageContainer> shouldReplicate()
     {
-        this.activeLocks.pop();
+        if (this.numberReads == 20)
+        {
+            this.numberReads = 0;
+            return this.storageContainers;
+        }
+        else
+        {
+            this.numberReads += 1;
+            return null;
+        }
     }
-
 }

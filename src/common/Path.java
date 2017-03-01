@@ -25,6 +25,7 @@ public class Path
     ArrayList<Component> components = new ArrayList<>();
     String localPath;
     Type type;
+    long fileSize = -1;
 
 
     /** Creates a new path which represents the root directory. */
@@ -411,6 +412,16 @@ public class Path
             subPaths.add(new Path(subPaths.get(i - 1), components.get(i).toString()));
         }
         return subPaths;
+    }
+
+    public void addFileSize(long size)
+    {
+        this.fileSize = size;
+    }
+
+    public long getFileSize()
+    {
+        return this.fileSize;
     }
 
     public void setType(Type type)

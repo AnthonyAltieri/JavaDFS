@@ -135,6 +135,11 @@ public class StorageServer
         {
             throw new RMIException(throwable.getMessage(), throwable.getCause());
         }
+        Path[] allFiles = Path.list(this.root);
+        for (Path p : allFiles)
+        {
+            p.addFileSize(new File(this.getLocalPath(p)).length());
+        }
         Path[] duplicates = naming_server.register(
             storage,
             command,
@@ -225,16 +230,23 @@ public class StorageServer
             throw new NullPointerException("path is null");
         if (!FileService.doesExist(getLocalPath(file)))
             throw new FileNotFoundException("file does not exist");
-        if (length < 0)
+        long fileSize = size(file);
+        if (length < -1 || length > fileSize)
             throw new IndexOutOfBoundsException("length can't be negative");
         if (offset < 0)
             throw new IndexOutOfBoundsException("negative offset");
         if ((offset + length) > size(file))
             throw new IndexOutOfBoundsException("offset and length exceed file size");
 
+        int usedLength = length;
+        if (length == -1)
+        {
+            usedLength = (int) fileSize;
+        }
+
         FileInputStream fis = new FileInputStream(FileService.getFile(getLocalPath(file)));
-        byte[] buffer = new byte[length];
-        if (fis.read(buffer, (int) offset, length) != length)
+        byte[] buffer = new byte[usedLength];
+        if (fis.read(buffer, (int) offset, usedLength) != usedLength)
             throw new IOException("Did not read the desired length");
         fis.close();
         return buffer;
@@ -314,6 +326,7 @@ public class StorageServer
     @Override
     public synchronized boolean delete(Path file)
     {
+        System.err.println("delete(" + file + ")");
         if (file == null)
             throw new NullPointerException("file is null");
         if (file.toString().equals("/"))
@@ -327,8 +340,30 @@ public class StorageServer
     {
         if (file == null)
             throw new NullPointerException("file is null");
+        if (server == null)
+            throw new NullPointerException("server is null");
+        if (file.isDirectory())
+            throw new FileNotFoundException("cant copy directory");
 
-        throw new UnsupportedOperationException("not implemented");
+        ArrayList<Path> subPaths = file.getSubPaths();
+        subPaths.remove(0);
+        subPaths.remove(subPaths.size() - 1);
+        for (Path p : subPaths)
+        {
+            if (!FileService.doesExist(p.toString()))
+            {
+                boolean success = new File(getLocalPath(p)).mkdir();
+                if (!success) return false;
+            }
+        }
+
+        long fileSize = server.size(file);
+        byte[] data = server.read(file, 0, (int) fileSize);
+        FileOutputStream fos = new FileOutputStream(getLocalPath(file));
+        fos.write(data);
+        fos.flush();
+        fos.close();
+        return true;
     }
 
     private String getLocalPath(Path path)

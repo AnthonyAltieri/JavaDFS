@@ -67,9 +67,9 @@ public class ConformanceTests
                  conformance2.naming.StubRetrievalTest.class,
                  conformance2.naming.LockTest.class,
                  conformance2.naming.QueueTest.class,
-//                conformance2.storage.ReplicationTest.class,
-//                 conformance2.naming.ReplicationTest.class,
-//                 conformance2.naming.DeletionTest.class
+                conformance2.storage.ReplicationTest.class,
+                 conformance2.naming.ReplicationTest.class,
+                 conformance2.naming.DeletionTest.class
             };
         Series                      series = new Series(tests);
         SeriesReport                report = series.run(3, System.out);
