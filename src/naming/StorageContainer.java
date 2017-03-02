@@ -33,4 +33,17 @@ public class StorageContainer
         string = string + ": " + this.storage;
         return string;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof StorageContainer)) return false;
+        return this.toString().equals(obj.toString());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return this.toString().hashCode();
+    }
 }

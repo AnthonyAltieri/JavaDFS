@@ -147,8 +147,6 @@ public class NamingServer
      */
     protected void stopped(Throwable cause)
     {
-        System.out.println("[NamingServer stopped]");
-        System.out.println((cause == null ? "" : cause.toString()) + "\n");
     }
 
     // The following public methods are documented in Service.java.
@@ -173,10 +171,6 @@ public class NamingServer
             {
                 this.fileSystem.attemptReplicate(path, storageContainers);
             }
-        }
-        else
-        {
-            this.fileSystem.consolidateWriteData(path);
         }
         this.fileSystem.lock(path, status);
         if (exclusive) this.lock.unlock();
@@ -269,30 +263,35 @@ public class NamingServer
     {
         if (!this.fileSystem.hasPath(path))
             throw new FileNotFoundException("path does not exist");
-        this.lock.lock();
+
+        this.lock(path, true);
         try
         {
-            boolean result = false;
-            for (StorageContainer sc : this.fileSystem.get(path).getStorageContainers())
+            boolean result = true;
+            if (path.isFile())
             {
-                result = sc.getCommand().delete(path);
-                if (!result) return false;
+                result = result && this.fileSystem.delete(path);
             }
-            result = result || this.fileSystem.remove(path);
-            lock.unlock();
+            else
+            {
+                result = result && this.fileSystem.delete(path);
+                result = result && this.fileSystem.childDelete(path);
+            }
+            this.unlock(path.parent(), true);
             return result;
         }
         catch (FileNotFoundException e)
         {
-            lock.unlock();
+            this.unlock(path.parent(), true);
             throw e;
         }
         catch (RMIException e)
         {
-            lock.unlock();
+            this.unlock(path.parent(), true);
             throw e;
         }
     }
+
 
 
     @Override
@@ -321,13 +320,11 @@ public class NamingServer
         if (this.registry.contains(client_stub))
             throw new IllegalStateException("storage server already registered");
 
-        System.err.println("register(" + client_stub + ") files.length: " + files.length);
 
         this.registry.add(client_stub);
 
         if (files.length == 0)
         {
-            System.err.println("adding empty server");
             this.fileSystem.emptyServers.add(new StorageContainer(client_stub, command_stub));
             return new Path[0];
         }
@@ -352,7 +349,6 @@ public class NamingServer
             catch (FileNotFoundException e)
             {
                 // This should NEVER happen
-                System.err.println("<ERROR> Path should always be valid for register");
                 e.printStackTrace();
             }
 
@@ -369,6 +365,7 @@ public class NamingServer
         return this.fileSystem.hasStorageConnected();
 
     }
+
 
 
 }

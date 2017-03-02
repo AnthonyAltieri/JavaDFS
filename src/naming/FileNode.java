@@ -192,8 +192,14 @@ public class FileNode
         return this.status != Status.OPEN;
     }
 
+    public void setStorageContainers(ArrayList<StorageContainer> storageContainers)
+    {
+        this.storageContainers = storageContainers;
+    }
+
     public ArrayList<StorageContainer> shouldReplicate()
     {
+        this.numberReads += 1;
         if (this.numberReads == 20)
         {
             this.numberReads = 0;
@@ -201,8 +207,12 @@ public class FileNode
         }
         else
         {
-            this.numberReads += 1;
             return null;
         }
+    }
+
+    public boolean containsStorageContainer(StorageContainer storageContainer)
+    {
+        return this.storageContainers.contains(storageContainer);
     }
 }

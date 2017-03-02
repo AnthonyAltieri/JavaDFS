@@ -57,8 +57,8 @@ public class DeletionTest extends NamingTest
             try
             {
                 service_stub.lock(delete_file, false);
-                service_stub.unlock(delete_file, false);
-            }
+            service_stub.unlock(delete_file, false);
+        }
             catch(Throwable t)
             {
                 throw new TestFailed("unable to access " + delete_file +

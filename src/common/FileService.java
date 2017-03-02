@@ -83,8 +83,8 @@ public class FileService
 
     public static boolean deleteFile(String path)
     {
+
         File file = new File(path);
-        boolean childResult = true;
         if (file.isDirectory())
         {
             File[] children = file.listFiles();
@@ -92,14 +92,14 @@ public class FileService
             {
                 if (child.isFile())
                 {
-                    child.delete();
+                    if (!child.delete()) return false;
                 }
                 else if (child.isDirectory())
                 {
-                    childResult = childResult && deleteFile(child.getPath());
+                    if (!deleteFile(child.getPath())) return false;
                 }
             }
-            return file.delete() && childResult;
+            return file.delete();
         }
         else
         {

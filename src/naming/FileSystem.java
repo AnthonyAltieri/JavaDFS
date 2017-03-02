@@ -70,6 +70,7 @@ public class FileSystem
         // Remove the root
         subPaths.remove(0);
         FileNode focus = this.root;
+        StorageContainer storageContainer = new StorageContainer(storage, command);
         while (!subPaths.isEmpty())
         {
             Path currentPath = subPaths.remove(0);
@@ -81,6 +82,10 @@ public class FileSystem
                 focus.getChildren().put(currentPath,newNode);
                 focus = newNode;
                 continue;
+            }
+            else if (!next.containsStorageContainer(storageContainer))
+            {
+                next.getStorageContainers().add(storageContainer);
             }
             focus = next;
         }
@@ -186,7 +191,10 @@ public class FileSystem
 
     StorageContainer findAvailableStorageContainer(ArrayList<StorageContainer> alreadyIn)
     {
-        if (this.emptyServers.size() > 0) return this.emptyServers.remove(0);
+        if (this.emptyServers.size() > 0)
+        {
+            return this.emptyServers.remove(0);
+        }
         Set<StorageContainer> alreadyInSet = alreadyIn == null
             ? new HashSet<>()
             : new HashSet<>(alreadyIn);
@@ -196,14 +204,14 @@ public class FileSystem
 
 
     public void lock(Path path, Status status)
-        throws FileNotFoundException
+        throws FileNotFoundException, RMIException
     {
         this.lockHelper(path, status, false);
         FileNode node = this.get(path);
     }
 
     private void lockHelper(Path path, Status status, boolean isRipple)
-        throws FileNotFoundException
+        throws FileNotFoundException, RMIException
     {
         FileNode node = get(path);
         node.lock();
@@ -220,6 +228,9 @@ public class FileSystem
                 }
                 node.addExclusiveLock();
                 node.setStatus(Status.EXCLUSIVE);
+
+
+                consolidateWriteData(node.getPath());
 
                 // Set all of the parent nodes to SHARED
                 if (!isRipple)
@@ -327,12 +338,15 @@ public class FileSystem
         if (storageContainers.size() > 1)
         {
             invalidStorageContainers = new ArrayList<>();
-            for (int i = 0 ; i < storageContainers.size() - 1 ; i++)
+            for (int i = 0 ; i < (storageContainers.size() - 1) ; i++)
             {
-                StorageContainer invalid = storageContainers.remove(i);
+                StorageContainer invalid = storageContainers.remove(0);
                 invalid.getCommand().delete(path);
                 invalidStorageContainers.add(invalid);
             }
+            ArrayList<StorageContainer> consolidated = new ArrayList<>();
+            consolidated.add(storageContainers.get(0));
+            node.setStorageContainers(consolidated);
         }
         return invalidStorageContainers;
     }
@@ -411,4 +425,45 @@ public class FileSystem
         return null;
     }
 
+    /**
+     * Removes children directory and its children references from the naming server
+     * @param path
+     * @return
+     * @throws FileNotFoundException
+     * @throws RMIException
+     */
+    public boolean childDelete(Path path)
+        throws FileNotFoundException, RMIException
+    {
+        FileNode node = this.get(path);
+        ArrayList<FileNode> children = new ArrayList<>(node.getChildren().values());
+        boolean childResult = true;
+        if (children.size() > 0)
+        {
+            for (int i = 0 ; i < children.size() ; i++)
+            {
+                FileNode child = children.get(i);
+                childResult = childResult && this.childDelete(child.getPath());
+            }
+        }
+        return childResult && this.remove(path);
+    }
+
+    /**
+     * Calls delete on storage server that contains path
+     * @param path
+     * @return
+     * @throws FileNotFoundException
+     * @throws RMIException
+     */
+    public boolean delete(Path path)
+        throws FileNotFoundException, RMIException
+    {
+        boolean result = true;
+        for (StorageContainer sc : this.get(path).getStorageContainers())
+        {
+            result = result && sc.getCommand().delete(path);
+        }
+        return result;
+    }
 }

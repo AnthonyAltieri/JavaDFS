@@ -54,7 +54,6 @@ public class StorageServer
     public StorageServer(File root, int client_port, int command_port)
         throws IOException, NullPointerException
     {
-        System.err.println("StorageServer(" + root.toString() + ", " + client_port + ", " + command_port + ")");
         if (root == null) throw new NullPointerException("root is null");
         this.root = root;
         if (client_port == 0)
@@ -326,7 +325,6 @@ public class StorageServer
     @Override
     public synchronized boolean delete(Path file)
     {
-        System.err.println("delete(" + file + ")");
         if (file == null)
             throw new NullPointerException("file is null");
         if (file.toString().equals("/"))
